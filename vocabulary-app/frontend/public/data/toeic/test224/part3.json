@@ -1,0 +1,482 @@
+{
+    "title": "Part 3",
+    "questions": [
+        {
+            "id": 32,
+            "question": "What are the speakers mainly discussing?",
+            "options": [
+                "A training seminar.",
+                "B. The installation of a television.",
+                "C. The date of a presentation.",
+                "D. A software upgrade."
+            ],
+            "answer": "B",
+            "audio": "audio/q32.mp3"
+        },
+        {
+            "id": 33,
+            "question": "What is the problem?",
+            "options": [
+                "A. The necessary tools are unavailable.",
+                "B. The office is closed.",
+                "C. The wall is too weak.",
+                "D. The phone number was wrong."
+            ],
+            "answer": "A",
+            "audio": "audio/q32.mp3"
+        },
+        {
+            "id": 34,
+            "question": "What most likely will the man do first tomorrow?",
+            "options": [
+                "A. Order a replacement part.",
+                "B. Consult an instruction manual.",
+                "C. Contact the woman.",
+                "D. Fill out a work order."
+            ],
+            "answer": "C",
+            "audio": "audio/q32.mp3"
+        },
+        {
+            "id": 35,
+            "question": "What position is the man applying for?",
+            "options": [
+                "A. Lecturer.",
+                "B. Editor.",
+                "C. Journalist",
+                "D. Superintendent."
+            ],
+            "answer": "A",
+            "audio": "audio/q35.mp3"
+        },
+        {
+            "id": 36,
+            "question": "What makes the man qualified for the position?",
+            "options": [
+                "A. His academic background.",
+                "B. His previous work experience.",
+                "C. His public popularity.",
+                "D. His eloquence."
+            ],
+            "answer": "B",
+            "audio": "audio/q35.mp3"
+        },
+        {
+            "id": 37,
+            "question": "What extra benefit does the woman mention?",
+            "options": [
+                "A. Health insurance",
+                "B. Flexible hours",
+                "C. A lot of free time.",
+                "D. Regular incentives."
+            ],
+            "answer": "C",
+            "audio": "audio/q35.mp3"
+        },
+        {
+            "id": 38,
+            "question": "What are the speakers mainly discussing?",
+            "options": [
+                "A. An interior renovation. ",
+                "B. A product launch.",
+                "C. A luncheon reservation.",
+                "D. A budget proposal."
+            ],
+            "answer": "A",
+            "audio": "audio/q38.mp3"
+        },
+        {
+            "id": 39,
+            "question": "What does the man say about the dining room?",
+            "options": [
+                "A. It needs more lighting. ",
+                "B. It is quite cold.",
+                "C. It is spacious.",
+                "D. It is too loud."
+            ],
+            "answer": "C",
+            "audio": "audio/q38.mp3"
+        },
+        {
+            "id": 40,
+            "question": "What does the man suggest the woman do?",
+            "options": [
+                "A. Repaint the walls a brighter color.",
+                "B. Compensate guests who have reservations.",
+                "C. Draft a budget proposal.",
+                "D. Open a bank account."
+            ],
+            "answer": "B",
+            "audio": "audio/q38.mp3"
+        },
+        {
+            "id": 41,
+            "question": "What is the man concerned about?",
+            "options": [
+                "A. Getting his camera fixed.",
+                "B. Receiving sick leave from work.",
+                "C. Preparing for a party.",
+                "D. Introducing a client."
+            ],
+            "answer": "C",
+            "audio": "audio/q41.mp3"
+        },
+        {
+            "id": 42,
+            "question": "According to the man, why does Greg like his new job?",
+            "options": [
+                "A. It offers better vacation time.",
+                "B. It pays a higher salary.",
+                "C. It matches his abilities.",
+                "D. It provides health benefits."
+            ],
+            "answer": "C",
+            "audio": "audio/q41.mp3"
+        },
+        {
+            "id": 43,
+            "question": "What most likely will the woman do next?",
+            "options": [
+                "A. Take a group photo.",
+                "B. Attend a Christmas party.",
+                "C. Contact Greg.",
+                "D. Send an e-mail attachment."
+            ],
+            "answer": "D",
+            "audio": "audio/q41.mp3"
+        },
+        {
+            "id": 44,
+            "question": "What is the man concerned about?",
+            "options": [
+                "A. Finishing a project on time.",
+                "B. Paying for his new mobile phone.",
+                "C. Repairing a piece of equipment.        ",
+                "D. Learning a new skill."
+            ],
+            "answer": "D",
+            "audio": "audio/q44.mp3"
+        },
+        {
+            "id": 45,
+            "question": "Where do the speakers work?",
+            "options": [
+                "A. At a repair shop.",
+                "B. At an electronics store.",
+                "C. At a marketing firm",
+                "D. At a design company."
+            ],
+            "answer": "D",
+            "audio": "audio/q44.mp3"
+        },
+        {
+            "id": 46,
+            "question": "What does the woman offer to do?",
+            "options": [
+                "A. Provide assistance.",
+                "B. Pay in cash.",
+                "C. Fill in for the man.",
+                "D. E-mail a user manual."
+            ],
+            "answer": "A",
+            "audio": "audio/q44.mp3"
+        },
+        {
+            "id": 47,
+            "question": "Who most likely is the man?",
+            "options": [
+                "A. A shop owner.",
+                "B. A construction worker.",
+                "C. A local resident.",
+                "D. A market researcher."
+            ],
+            "answer": "D",
+            "audio": "audio/q47.mp3"
+        },
+        {
+            "id": 48,
+            "question": "What does the woman mention about the mall?",
+            "options": [
+                "A. It was recently renovated.",
+                "B. It has sufficient parking space.",
+                "C. It is attracting many tourists.",
+                "D. It is located outside of town."
+            ],
+            "answer": "B",
+            "audio": "audio/q47.mp3"
+        },
+        {
+            "id": 49,
+            "question": "Why does the woman usually visit the mall?",
+            "options": [
+                "A. To purchase groceries.",
+                "B. To meet with her clients.",
+                "C. To buy clothing.",
+                "D. To buy clothing."
+            ],
+            "answer": "C",
+            "audio": "audio/q47.mp3"
+        },
+        {
+            "id": 50,
+            "question": "What are the speakers discussing?",
+            "options": [
+                "A. Orders for office supplies. ",
+                "B. Equipment for a conference.",
+                "C. The budget reports.",
+                "D Their colleague."
+            ],
+            "answer": "A",
+            "audio": "audio/q50.mp3"
+        },
+        {
+            "id": 51,
+            "question": "Why does the man mention when the supply company closes?",
+            "options": [
+                "A. To inform her of the business hours.",
+                "B. To let her know she can't order anything.",
+                "C. To explain that the second order would be late.",
+                "D. To imply that new equipment can't be ordered."
+            ],
+            "answer": "C",
+            "audio": "audio/q50.mp3"
+        },
+        {
+            "id": 52,
+            "question": "What does the woman offer to do?",
+            "options": [
+                "A. Pay for the new order.",
+                "B. Order the supplies herself.",
+                "C. Cancel a meeting.        ",
+                "D. Speak to their colleague."
+            ],
+            "answer": "D",
+            "audio": "audio/q50.mp3"
+        },
+        {
+            "id": 53,
+            "question": "What is the problem?",
+            "options": [
+                "A. The plane tickets were not booked.",
+                "B. A meeting had to be rescheduled.",
+                "C. The meeting was a success.",
+                "D. A deadline has been changed."
+            ],
+            "answer": "B",
+            "audio": "audio/q53.mp3"
+        },
+        {
+            "id": 54,
+            "question": "Which part of the business trip will be postponed?",
+            "options": [
+                "A. The meeting in New York.",
+                "B. The meeting in Wisconsin.",
+                "C. The meeting in Washington.",
+                "D. The meeting in Westboro."
+            ],
+            "answer": "C",
+            "audio": "audio/q53.mp3"
+        },
+        {
+            "id": 55,
+            "question": "What does the man mean when he says :That's not a bad idea?",
+            "options": [
+                "A. He thinks it is a bad idea.",
+                "B. He agrees with the proposed solution.",
+                "C. He wants to hear other ideas.",
+                "D. He disagrees with the solution."
+            ],
+            "answer": "B",
+            "audio": "audio/q53.mp3"
+        },
+        {
+            "id": 56,
+            "question": "What was the woman doing in Australia?",
+            "options": [
+                "A. Going on a business trip.",
+                "B. Studying abroad.",
+                "C. Taking a vacation.",
+                "D. Searching for employees.D"
+            ],
+            "answer": "C",
+            "audio": "audio/q56.mp3"
+        },
+        {
+            "id": 57,
+            "question": "What does the woman imply when she says :Is this Robert Wilder's application?",
+            "options": [
+                "A. She is surprised to see the application.",
+                "B. She will reject the application.",
+                "C. She doesn't understand something.",
+                "D. She agrees with the application."
+            ],
+            "answer": "A",
+            "audio": "audio/q56.mp3"
+        },
+        {
+            "id": 58,
+            "question": "How does the woman know Robert Wilder?",
+            "options": [
+                "A. They went to college together.",
+                "B. They work in the same department.",
+                "C. They play baseball together.",
+                "D. They play tennis together."
+            ],
+            "answer": "D",
+            "audio": "audio/q56.mp3"
+        },
+        {
+            "id": 59,
+            "question": "What is the woman concerned about?",
+            "options": [
+                "A. Getting extra vacation.",
+                "B. Doing too much work.",
+                "C. Not having time for her children.",
+                "D. Preparing a report."
+            ],
+            "answer": "C",
+            "audio": "audio/q59.mp3"
+        },
+        {
+            "id": 60,
+            "question": "What does the man suggest?",
+            "options": [
+                "A. Fire the manager.",
+                "B. Wait until their vacation.",
+                "C. Hire a babysitter.        ",
+                "D. Have some extra vacation days."
+            ],
+            "answer": "D",
+            "audio": "audio/q59.mp3"
+        },
+        {
+            "id": 61,
+            "question": "What does the woman say she will have to do?",
+            "options": [
+                "A. Hire a babysitter.",
+                "B. Go to another company.",
+                "C. Ask her husband.",
+                "D. Finish her sales reports."
+            ],
+            "answer": "A",
+            "audio": "audio/q59.mp3"
+        },
+        {
+            "id": 62,
+            "question": "What does the woman have on Friday?",
+            "options": [
+                "A. A dinner meeting.        ",
+                "B. A seminar.",
+                "C. A meeting.",
+                "D. A work party."
+            ],
+            "answer": "C",
+            "image": "img/q62.png",
+            "audio": "audio/q62.mp3"
+        },
+        {
+            "id": 63,
+            "question": "Look at the graphic. How much does the woman pay for the furniture?",
+            "options": [
+                "A. $165.",
+                "B. $195.",
+                "C. $307.",
+                "D. $614."
+            ],
+            "answer": "D",
+            "image": "img/q62.png",
+            "audio": "audio/q62.mp3"
+        },
+        {
+            "id": 64,
+            "question": "What does the man say he will do?",
+            "options": [
+                "A. Arrange free delivery.",
+                "B. Deliver the furniture in the evening.",
+                "C. Send a confirmation.",
+                "D. Deliver the table himself."
+            ],
+            "answer": "A",
+            "image": "img/q62.png",
+            "audio": "audio/q62.mp3"
+        },
+        {
+            "id": 65,
+            "question": "Why does the woman call?",
+            "options": [
+                "A. To get an upgrade.",
+                "B. To book a flight to Korea and Japan.",
+                "C. To cancel her flight to Singapore.",
+                "D. To sign up for a mileage card."
+            ],
+            "answer": "A",
+            "image": "img/q65.png",
+            "audio": "audio/q65.mp3"
+        },
+        {
+            "id": 66,
+            "question": "Look at the graphic. How many points will the woman use?",
+            "options": [
+                "A. 50,000.",
+                "B. 60,000.",
+                "C. 70,000.",
+                "D. 80,000."
+            ],
+            "answer": "B",
+            "image": "img/q65.png",
+            "audio": "audio/q65.mp3"
+        },
+        {
+            "id": 67,
+            "question": "What suggestion does the man give the woman?",
+            "options": [
+                "A. Upgrade her Korean flight.",
+                "B. Make the request after her trip.",
+                "C. Book a different flight.",
+                "D. Cancel her reservation."
+            ],
+            "answer": "B",
+            "image": "img/q65.png",
+            "audio": "audio/q65.mp3"
+        },
+        {
+            "id": 68,
+            "question": "What are the speakers discussing?",
+            "options": [
+                "A. Their GPS systems.",
+                "B. Which coffee shop to visit.",
+                "C. How far Cambridge is from their apartments.",
+                "D. The fastest route to work."
+            ],
+            "answer": "D",
+            "image": "img/q68.png",
+            "audio": "audio/q68.mp3"
+        },
+        {
+            "id": 69,
+            "question": "What does the woman want to do?",
+            "options": [
+                "A. Keep losing the game.",
+                "B. Make more money than he does.",
+                "CC. Get to work faster than he does.",
+                "D. Participate in a car race."
+            ],
+            "answer": "C",
+            "image": "img/q68.png",
+            "audio": "audio/q68.mp3"
+        },
+        {
+            "id": 70,
+            "question": "Look at the list. Which shop does the man most likely stop at?",
+            "options": [
+                "A. Coffee Bean.",
+                "B. Tea shop.",
+                "C. Java the Cup.",
+                "D. Jake's Diner."
+            ],
+            "answer": "C",
+            "image": "img/q68.png",
+            "audio": "audio/q68.mp3"
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+import { Link } from 'react-router-dom';
+
+function Navbar({ token, role, dispatch, logout }) {
+  return (
+    <nav className="bg-blue-900 text-white p-4 shadow-lg">
+      <div className="container mx-auto flex justify-between items-center">
+        <Link to="/" className="text-2xl font-bold text-blue-300">Learn English</Link>
+        <div className="space-x-4 flex items-center">
+          <Link to="/school-plans" className="hover:underline">School Plans</Link>
+          <Link to="/library" className="hover:underline">Library</Link>
+          <Link to="/business" className="hover:underline">For Business</Link>
+          {token ? (
+            <>
+              <Link to="/dashboard" className="hover:underline">Dashboard</Link>
+              {role === 'student' && (
+                <>
+                  <Link to="/learn" className="hover:underline">Learn</Link>
+                  <Link to="/quiz" className="hover:underline">Quiz</Link>
+                  <Link to="/stats" className="hover:underline">Stats</Link>
+                </>
+              )}
+              <button
+                onClick={() => dispatch(logout())}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hover:underline">Login</Link>
+              <Link to="/register" className="hover:underline">Register</Link>
+            </>
+          )}
+          <button className="bg-gray-200 text-blue-900 px-4 py-2 rounded mr-2">Get a quote</button>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded">Enter code</button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;

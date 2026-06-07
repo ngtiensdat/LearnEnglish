@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+}
+
+.navbar {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors duration-200;
+}
+
+/* --- TOEIC PAGE STYLING --- */
+.testitem-wrapper {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.testitem-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+.testitem-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.75rem;
+}
+.testitem-info-wrapper {
+  font-size: 0.875rem;
+  color: #555;
+}
+.testitem-info {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.testitem-start-test .btn {
+  display: inline-block;
+  text-align: center;
+  background: transparent;
+  border: 1px solid #f97316; /* orange-500 */
+  color: #f97316;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.testitem-start-test .btn:hover {
+  background: #f97316;
+  color: white;
+}
+.text-dark {
+  color: #222;
+  text-decoration: none;
+}
+.text-dark:hover {
+  color: #0a0fa5;
+}

@@ -1,0 +1,352 @@
+{
+    "title": "Part 4",
+    "questions": [
+        {
+            "id": 71,
+            "question": "Where most likely does the speaker work?",
+            "options": [
+                "A. At a theater.",
+                "B. At a car dealership.",
+                "C. At a retail store.",
+                "D. At a library."
+            ],
+            "answer": "C",
+            "audio": "audio/q71.mp3"
+        },
+        {
+            "id": 72,
+            "question": "What is the listener asked to double-check?",
+            "options": [
+                "A. Accurate prices.",
+                "B. Sales figures.",
+                "C. Business hours.",
+                "D. Name tags."
+            ],
+            "answer": "A"
+        },
+        {
+            "id": 73,
+            "question": "When should the listener contact the speaker?",
+            "options": [
+                "A. If an employee is late for work.",
+                "B. If a technical problem occurs.",
+                "C. If an item is out of stock.",
+                "D. If a customer is dissatisfied."
+            ],
+            "answer": "D"
+        },
+        {
+            "id": 74,
+            "question": "What is the announcement about?",
+            "options": [
+                "A. An opening of a public building.",
+                "B. A commemorative statue.",
+                "C. A singing contest.",
+                "D. A survey result."
+            ],
+            "answer": "A",
+            "audio": "audio/q74.mp3"
+        },
+        {
+            "id": 75,
+            "question": "Who is Jim Neilson?",
+            "options": [
+                "A. A mayor.",
+                "B. An instructor.",
+                "C. A musician.",
+                "D. An architect        ."
+            ],
+            "answer": "C"
+        },
+        {
+            "id": 76,
+            "question": "What are attendees asked to do?",
+            "options": [
+                "A. Reserve seats in advance.",
+                "B. Complete a survey.",
+                "C. Subscribe to a newsletter.",
+                "D. Contribute to a fundraiser."
+            ],
+            "answer": "B"
+        },
+        {
+            "id": 77,
+            "question": "Who most likely is the speaker?",
+            "options": [
+                "A. A scholar. ",
+                "B. A producer.",
+                "C. A pilot.",
+                "D. A programmer."
+            ],
+            "answer": "B",
+            "audio": "audio/q77.mp3"
+        },
+        {
+            "id": 78,
+            "question": "Who are the listeners?",
+            "options": [
+                "A. Potential investors. ",
+                "B. Actors.",
+                "C. Housewives.",
+                "D. University students."
+            ],
+            "answer": "C"
+        },
+        {
+            "id": 79,
+            "question": "What will the listeners do in a meeting room?",
+            "options": [
+                "A. Participate in a raffle.",
+                "B. Watch a video.",
+                "C. Enroll in a class.",
+                "D. Attend an interview."
+            ],
+            "answer": "D"
+        },
+        {
+            "id": 80,
+            "question": "What does the speaker suggest doing?",
+            "options": [
+                "A. Wearing comfortable clothing.",
+                "B. Exercising on a regular basis.",
+                "C. Bringing personal belongings.",
+                "D. Booking a ticket in advance."
+            ],
+            "answer": "D",
+            "audio": "audio/q80.mp3"
+        },
+        {
+            "id": 81,
+            "question": "What does the speaker suggest doing?",
+            "options": [
+                "A. Wearing comfortable clothing.",
+                "B. Exercising on a regular basis.        ",
+                "C. Bringing personal belongings.",
+                "D. Booking a ticket in advance."
+            ],
+            "answer": "C"
+        },
+        {
+            "id": 82,
+            "question": "What does the speaker say about the summer camp?",
+            "options": [
+                "A. It is free of charge.",
+                "B. It will last three months.        ",
+                "C. It has a restricted number of participants.",
+                "D. It will be sponsored by Dave's Sport Shop.        "
+            ],
+            "answer": "C"
+        },
+        {
+            "id": 83,
+            "question": "What does the speaker mention about her company?",
+            "options": [
+                "A. They have merged with another company.",
+                "B. They are manufacturing a new product.",
+                "C. They are creating new policies.",
+                "D. They had record profits."
+            ],
+            "answer": "A",
+            "audio": "audio/q83.mp3"
+        },
+        {
+            "id": 84,
+            "question": "Why does the woman say, :my schedule is too tight to do that?",
+            "options": [
+                "A. Because the email is secure.",
+                "B. To sign a new contract.",
+                "C. She needs some help.",
+                "D. She doesn't have time to do it."
+            ],
+            "answer": "D"
+        },
+        {
+            "id": 85,
+            "question": "What will they be sending a lot of?",
+            "options": [
+                "A. Portfolios.",
+                "B. Contract forms.",
+                "C. Vital data.",
+                "D. Building plans."
+            ],
+            "answer": "C"
+        },
+        {
+            "id": 86,
+            "question": "What is The Tempest about?",
+            "options": [
+                "A. The evolution of man.",
+                "B. A love story about a man and woman.",
+                "C. An action movie.",
+                "D. It's theme is magic and illusion."
+            ],
+            "answer": "D",
+            "audio": "audio/q86.mp3"
+        },
+        {
+            "id": 87,
+            "question": "Why does the speaker say, Remember, last year the Bromley Actors Guild won first place at this event?",
+            "options": [
+                "A. To suggest that they are impressive.",
+                "B. To recommend that you join them.",
+                "C. To explain why they are here.",
+                "D. To excuse a poor performance."
+            ],
+            "answer": "A"
+        },
+        {
+            "id": 88,
+            "question": "What will most likely happen after the film screening?",
+            "options": [
+                "A. Dinner and drinks.",
+                "B. Question time with the actors.",
+                "C. DVDs will be sold.",
+                "D. The actors will sign autographs."
+            ],
+            "answer": "B"
+        },
+        {
+            "id": 89,
+            "question": "Why does the woman usually visit the mall?",
+            "options": [
+                "A. To purchase groceries.",
+                "B. To meet with her clients.",
+                "C. To buy clothing.",
+                "D. To buy clothing."
+            ],
+            "answer": "A",
+            "audio": "audio/q89.mp3"
+        },
+        {
+            "id": 90,
+            "question": "Why does the speaker say, I wonder if the cost is too high compared to the other products on the market?",
+            "options": [
+                "A. To ask for assistance. ",
+                "B. To offer help.",
+                "C. To suggest a change.",
+                "D. To create some new product        s.."
+            ],
+            "answer": "C"
+        },
+        {
+            "id": 91,
+            "question": "What will the listeners most likely do after lunch?",
+            "options": [
+                "A. Review safety policy.",
+                "B. Attend a seminar.",
+                "C. Go back to work.",
+                "D. Have a conference call."
+            ],
+            "answer": "D"
+        },
+        {
+            "id": 92,
+            "question": "Look at the graphic. Which items need to be ordered?",
+            "options": [
+                "A. Office tables and chairs.",
+                "B. Chairs and drafting tables.",
+                "C. Whiteboards and office chairs.",
+                "D. Chairs and whiteboard."
+            ],
+            "answer": "C",
+            "image": "img/q92.png",
+            "audio": "audio/q92.mp3"
+        },
+        {
+            "id": 93,
+            "question": "What does the speaker anticipate about the company?",
+            "options": [
+                "A. They won't need any more furniture.",
+                "B. They will have more staff in their building.",
+                "C. The boardrooms will be renovated.",
+                "D. Their staff are moving offices."
+            ],
+            "answer": "B"
+        },
+        {
+            "id": 94,
+            "question": "What is the listener asked to do before making any orders?",
+            "options": [
+                "A. Sign them herself.",
+                "B. Make sure the manager signs them.",
+                "C. Bring some extra paper.",
+                "D. Prepare a delivery receipt."
+            ],
+            "answer": "B"
+        },
+        {
+            "id": 95,
+            "question": "Which industry does the speaker work in?",
+            "options": [
+                "A. Computer hardware.",
+                "B. Computer games.",
+                "C. Computer software.",
+                "D. Computer microchips."
+            ],
+            "answer": "C",
+            "image": "images/q95.png",
+            "audio": "audio/q95.mp3"
+        },
+        {
+            "id": 96,
+            "question": "Look at the graphic. What company does the speaker work for?",
+            "options": [
+                "A. Future Tech Studios.",
+                "B. Slight Line Inc.",
+                "C. Seven Strings Technologies.",
+                "D. AK Gaming."
+            ],
+            "answer": "C",
+            "image": "images/q95.png"
+        },
+        {
+            "id": 97,
+            "question": "According to the speaker, what will the company do in the next quarter?",
+            "options": [
+                "A. Give away free gifts.",
+                "B. Give away expansion packs for freeC. Offer free software with new products.",
+                "C. She doesn't understand something.",
+                "D. Install a new security system."
+            ],
+            "answer": "B",
+            "image": "img/q97.png"
+        },
+        {
+            "id": 98,
+            "question": "What are the listeners training to be?",
+            "options": [
+                "A. Factory workers.",
+                "B. Store owners.",
+                "C. Restaurant chefs.",
+                "D. Medical workers ."
+            ],
+            "answer": "C",
+            "imange": "images/q98.png",
+            "audio": "audio/q98.mp3"
+        },
+        {
+            "id": 99,
+            "question": "According to the speaker, what will the listeners enjoy doing?",
+            "options": [
+                "A. Working with the celebrity chefs",
+                "B. Becoming a celebrity chef.",
+                "C. Using the kitchen tools.",
+                "D. Working with each other."
+            ],
+            "answer": "A",
+            "imange": "images/q98.png"
+        },
+        {
+            "id": 100,
+            "question": "Look at the graphic. On what day will the listeners learn food safety and hygiene?",
+            "options": [
+                "A. Tuesday.",
+                "B. Wednesday.",
+                "C. Thursday.",
+                "D. Friday."
+            ],
+            "answer": "C",
+            "imange": "images/q98.png"
+        }
+    ]
+}

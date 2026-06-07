@@ -1,0 +1,95 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  student
+  teacher
+  admin
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String
+  email     String   @unique
+  password  String
+  role      UserRole @default(student)
+  createdAt DateTime @default(now())
+}
+
+model Room {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  password    String
+  createdBy   String     
+  showScore   Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  questions   Question[]
+}
+
+model Question {
+  id            String   @id @default(uuid())
+  content       String
+  options       String[] 
+  correctAnswer Int
+  roomId        String
+  room          Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+}
+
+model Vocabulary {
+  id          String   @id @default(uuid())
+  word        String
+  meaning     String
+  example     String?
+  roomId      String
+  creator     String
+  interval    Int      @default(1)    // Spaced repetition interval in days
+  easeFactor  Float    @default(2.5)  // Spaced repetition ease factor (SuperMemo-2)
+  repetitions Int      @default(0)    // Consecutive correct reviews
+  nextReview  DateTime @default(now())
+}
+
+model StudentAnswer {
+  id          String   @id @default(uuid())
+  roomId      String
+  studentId   String
+  answers     Json     
+  score       Int      @default(0)
+  completedAt DateTime @default(now())
+}
+
+model History {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String   
+  action    String
+  roomId    String?
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+model ToeicResult {
+  id          String   @id @default(uuid())
+  userId      String
+  testId      String
+  part        String
+  answers     Json     
+  score       Int
+  total       Int
+  explanation String?  
+  completedAt DateTime @default(now())
+}
+
+model Stat {
+  id          String   @id @default(uuid())
+  userId      String
+  roomId      String
+  progress    Float    @default(0)
+  lastLearned DateTime @default(now())
+}
