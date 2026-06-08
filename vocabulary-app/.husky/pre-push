@@ -1,0 +1,1 @@
+cd vocabulary-app && npm test

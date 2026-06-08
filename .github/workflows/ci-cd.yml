@@ -31,17 +31,10 @@ jobs:
         run: npm ci
         working-directory: ./vocabulary-app
 
-      # 4. Kiểm tra mã nguồn với Linter (Backend)
-      - name: Lint Backend
-        run: npm run lint:backend
+      # 4. Chạy toàn bộ Unit Tests
+      - name: Run Unit Tests
+        run: npm run test
         working-directory: ./vocabulary-app
-        continue-on-error: false
-
-      # 5. Kiểm tra mã nguồn với Linter (Frontend)
-      - name: Lint Frontend
-        run: npm run lint:frontend
-        working-directory: ./vocabulary-app
-        continue-on-error: false
 
       # 6. Kiểm tra việc build Backend (có generate Prisma)
       - name: Build Backend
