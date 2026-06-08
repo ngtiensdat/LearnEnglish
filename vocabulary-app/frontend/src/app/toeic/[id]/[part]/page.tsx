@@ -156,6 +156,9 @@ export default function TOEICTestPlayerPage() {
                             alt={`Question ${q.id}`}
                             className="w-full max-w-xs cursor-pointer hover:scale-105 transition duration-300"
                             onClick={() => setZoomImage(imageSrc)}
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://placehold.co/300x200?text=No+Image';
+                            }}
                           />
                           <div className="absolute top-2 right-2 bg-slate-900/80 p-1.5 rounded-lg text-slate-300 opacity-0 group-hover:opacity-100 transition">
                             <ZoomIn className="w-4 h-4" />

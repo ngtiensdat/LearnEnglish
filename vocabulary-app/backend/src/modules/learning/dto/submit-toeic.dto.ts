@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, ValidateNested, Matches } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SubmitToeicAnswerDto {
@@ -14,10 +14,12 @@ export class SubmitToeicAnswerDto {
 export class SubmitToeicDto {
   @IsString()
   @IsNotEmpty()
+  @Matches(/^[a-zA-Z0-9_-]+$/)
   testId: string;
 
   @IsString()
   @IsNotEmpty()
+  @Matches(/^[a-zA-Z0-9_-]+$/)
   part: string;
 
   @IsArray()

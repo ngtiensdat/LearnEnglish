@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../../database/prisma.service';
 import { CreateVocabDto } from './dto/create-vocab.dto';
 import { ReviewVocabDto } from './dto/review-vocab.dto';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class VocabularyService {
@@ -34,7 +35,7 @@ export class VocabularyService {
       throw new NotFoundException('Không tìm thấy từ vựng');
     }
 
-    if (role !== 'admin' && vocab.creator !== userId) {
+    if (role !== UserRole.admin && vocab.creator !== userId) {
       throw new ForbiddenException('Bạn không có quyền xóa từ vựng này');
     }
 

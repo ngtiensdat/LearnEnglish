@@ -68,16 +68,21 @@ export class LearningService {
 
   async submitToeic(userId: string, dto: SubmitToeicDto) {
     const { testId, part, answers } = dto;
+    
+    // Sanitize parameters to prevent path traversal
+    const safeTestId = testId.replace(/[^a-zA-Z0-9_-]/g, '');
+    const safePart = part.replace(/[^a-zA-Z0-9_-]/g, '');
+    
     const toeicDir = path.join(__dirname, '../../data/toeic');
 
     let testData: { title: string; questions: any[] } = { title: '', questions: [] };
 
-    if (part === 'full') {
+    if (safePart === 'full') {
       const parts = ['part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7'];
       let allQuestions: any[] = [];
 
       for (const p of parts) {
-        const filePath = path.join(toeicDir, `test${testId}`, `${p}.json`);
+        const filePath = path.join(toeicDir, `test${safeTestId}`, `${p}.json`);
         if (fs.existsSync(filePath)) {
           const fileContent = fs.readFileSync(filePath, 'utf8');
           const fileData = JSON.parse(fileContent);
@@ -92,11 +97,11 @@ export class LearningService {
       }
 
       testData = {
-        title: `TOEIC Test ${testId} - Full Test`,
+        title: `TOEIC Test ${safeTestId} - Full Test`,
         questions: allQuestions,
       };
     } else {
-      const filePath = path.join(toeicDir, `test${testId}`, `${part}.json`);
+      const filePath = path.join(toeicDir, `test${safeTestId}`, `${safePart}.json`);
       if (!fs.existsSync(filePath)) {
         throw new NotFoundException('Không tìm thấy phần đề thi tương ứng');
       }

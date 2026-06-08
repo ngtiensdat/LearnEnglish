@@ -17,9 +17,9 @@
 
 ### Bước 1: Đọc và nạp toàn bộ cấu hình quy tắc (System Rules)
 Bạn bắt buộc phải đọc các file quy tắc và quy ước dưới đây để làm chuẩn đối chiếu:
-1. **Quy chuẩn AI:** Tất cả các tệp trong thư mục [.agent/rule/](file:///e:/FOOD_AI_code/.agent/rule) và [.agent/workflow/](file:///e:/FOOD_AI_code/.agent/workflow).
-2. **Quy chuẩn Lập trình viên:** Tất cả các tệp quy ước viết code và git trong [documents/08-conventions/](file:///e:/FOOD_AI_code/documents/08-conventions).
-3. **Các prompt review mẫu:** Các file review trong thư mục [.check-prompt/](file:///e:/FOOD_AI_code/.check-prompt).
+1. **Quy chuẩn AI:** Tất cả các tệp trong thư mục [.agent/rule/](file:/.agent/rule) và [.agent/workflow/](file:///e:/LEARNENGLISH/.agent/workflow).
+2. **Quy chuẩn Lập trình viên:** Tất cả các tệp quy ước viết code và git trong [documents/08-conventions/](file:///e:/LEARNENGLISH/documents/08-conventions).
+3. **Các prompt review mẫu:** Các file review trong thư mục [.check-prompt/](file:///e:/LEARNENGLISH/.check-prompt).
 
 ### Bước 2: Quét mã nguồn lõi của dự án (Core Codebase Scan)
 Bạn cần đọc và phân tích cấu hình cũng như mã nguồn then chốt của cả Frontend và Backend để hiểu kiến trúc hiện tại:
