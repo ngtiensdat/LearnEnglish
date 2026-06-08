@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-build:
+    name: Lint and Build Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout mã nguồn từ GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Thiết lập môi trường Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: vocabulary-app/package-lock.json
+
+      # 3. Cài đặt toàn bộ thư viện dependencies (bao gồm cả devDependencies)
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./vocabulary-app
+
+      # 4. Kiểm tra mã nguồn với Linter (Backend)
+      - name: Lint Backend
+        run: npm run lint:backend
+        working-directory: ./vocabulary-app
+        continue-on-error: false
+
+      # 5. Kiểm tra mã nguồn với Linter (Frontend)
+      - name: Lint Frontend
+        run: npm run lint:frontend
+        working-directory: ./vocabulary-app
+        continue-on-error: false
+
+      # 6. Kiểm tra việc build Backend (có generate Prisma)
+      - name: Build Backend
+        run: npm run build:backend
+        working-directory: ./vocabulary-app
+
+      # 7. Kiểm tra việc build Frontend
+      - name: Build Frontend
+        run: npm run build:frontend
+        working-directory: ./vocabulary-app
+
+  # Job CD (Tự động kích hoạt deploy Render sau khi các bước kiểm tra ở trên PASS)
+  deploy-backend:
+    name: Trigger Render Deploy
+    needs: lint-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Trigger Deploy Webhook
+        # Gửi request tới Render Deploy Webhook để bắt đầu deploy
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_WEBHOOK_URL }}"
