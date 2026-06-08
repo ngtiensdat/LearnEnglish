@@ -29,24 +29,35 @@ async function bootstrap() {
   // Enable global exception filter
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  // Dynamic CORS configuration matching FOOD-AI
+  // Dynamic CORS configuration with trailing-slash normalization and Vercel support
   app.enableCors({
     origin: (origin, callback) => {
-      const frontendUrl = configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
-      const allowedOrigins = [frontendUrl, 'http://127.0.0.1:3000'];
+      const rawFrontendUrl = configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+      const cleanFrontendUrl = rawFrontendUrl.replace(/\/$/, '');
+      const cleanOrigin = origin ? origin.replace(/\/$/, '') : '';
+
+      const allowedOrigins = [
+        cleanFrontendUrl,
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:3010',
+      ];
 
       if (
         !origin ||
-        allowedOrigins.includes(origin) ||
-        origin.startsWith('http://localhost:') ||
-        origin.startsWith('http://127.0.0.1:') ||
-        /^http:\/\/192\.168\.\d+\.\d+(:\d+)?$/.test(origin) ||
-        /^http:\/\/10\.\d+\.\d+\.\d+(:\d+)?$/.test(origin) ||
-        /^http:\/\/172\.(1[6-9]|2\d|3[01])\.\d+\.\d+(:\d+)?$/.test(origin)
+        allowedOrigins.includes(cleanOrigin) ||
+        cleanOrigin.startsWith('http://localhost:') ||
+        cleanOrigin.startsWith('https://localhost:') ||
+        cleanOrigin.startsWith('http://127.0.0.1:') ||
+        cleanOrigin.startsWith('https://127.0.0.1:') ||
+        cleanOrigin.endsWith('.vercel.app') ||
+        /^https?:\/\/192\.168\.\d+\.\d+(:\d+)?$/.test(cleanOrigin) ||
+        /^https?:\/\/10\.\d+\.\d+\.\d+(:\d+)?$/.test(cleanOrigin) ||
+        /^https?:\/\/172\.(1[6-9]|2\d|3[01])\.\d+\.\d+(:\d+)?$/.test(cleanOrigin)
       ) {
         callback(null, true);
       } else {
-        callback(new Error(`Origin ${origin} not allowed by CORS`));
+        callback(null, false);
       }
     },
     credentials: true,
