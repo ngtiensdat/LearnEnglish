@@ -22,4 +22,9 @@ export class StatsController {
   async getHistory(@GetUser('id') userId: string) {
     return this.statsService.getHistory(userId);
   }
+
+  @Get('dashboard')
+  async getDashboardStats(@GetUser('id') userId: string) {
+    return this.statsService.getDashboardStats(userId);
+  }
 }

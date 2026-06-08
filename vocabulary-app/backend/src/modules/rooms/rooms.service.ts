@@ -2,7 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 import { PrismaService } from '../../database/prisma.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { AddQuestionsDto } from './dto/add-questions.dto';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class RoomsService {

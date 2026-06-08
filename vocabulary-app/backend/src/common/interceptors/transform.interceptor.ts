@@ -10,32 +10,40 @@ import { map } from 'rxjs/operators';
 export interface Response<T> {
   success: boolean;
   data: T;
-  meta?: any;
-  errors?: any;
+  meta?: {
+    total?: number;
+    page?: number;
+    limit?: number;
+    [key: string]: unknown;
+  };
 }
 
 @Injectable()
-export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
+export class TransformInterceptor<T> implements NestInterceptor<
+  T,
+  Response<T>
+> {
   intercept(
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
     return next.handle().pipe(
-      map((res) => {
-        // If response is already in correct format, return it
-        if (res && typeof res === 'object' && 'success' in res && 'data' in res) {
-          return res;
+      map((data: T): Response<T> => {
+        // Nếu data đã có cấu trúc data/meta thì giữ nguyên
+        if (data && typeof data === 'object' && 'data' in data) {
+          const wrapper = data as unknown as Response<T>;
+          return {
+            success: true,
+            data: wrapper.data,
+            meta: wrapper.meta || {},
+          };
         }
 
-        // Handle pagination meta if exists
-        const data = res && res.data !== undefined ? res.data : res;
-        const meta = res && res.meta !== undefined ? res.meta : undefined;
-
+        // Nếu data là một mảng hoặc object bình thường, mặc định bọc trong data và meta rỗng
         return {
           success: true,
-          data,
-          meta,
-          errors: null,
+          data: data,
+          meta: {},
         };
       }),
     );

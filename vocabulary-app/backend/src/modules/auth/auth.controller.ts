@@ -9,7 +9,7 @@ import { GetUser } from '../../common/decorators/get-user.decorator';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('register')
+  @Post(['register', 'auth/register'])
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
@@ -19,7 +19,7 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-  @Get('me')
+  @Get(['me', 'auth/me'])
   @UseGuards(JwtAuthGuard)
   async getMe(@GetUser('id') userId: string) {
     return this.authService.getMe(userId);

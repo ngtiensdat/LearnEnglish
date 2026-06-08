@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Volume2, ZoomIn, CheckCircle2, AlertCircle } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -10,8 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function TOEICTestPlayerPage() {
   const params = useParams();
-  const id = params.id as string;
-  const part = params.part as string;
+  const id = (params?.id as string) || '';
+  const part = (params?.part as string) || '';
   const router = useRouter();
   const { token } = useAuthStore();
 

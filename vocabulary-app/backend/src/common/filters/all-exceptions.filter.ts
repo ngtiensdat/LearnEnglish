@@ -1,11 +1,6 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
+import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { Response, Request } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -19,38 +14,34 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    let message = 'Internal server error';
-    let code = 'INTERNAL_SERVER_ERROR';
-    let details: any = null;
+    let message: string | string[] = 'Internal server error';
+    let errorCode = 'INTERNAL_SERVER_ERROR';
 
     if (exception instanceof HttpException) {
-      const resBody: any = exception.getResponse();
-      message = typeof resBody === 'object' && resBody.message ? resBody.message : exception.message;
-      code = typeof resBody === 'object' && resBody.error ? resBody.error.toUpperCase().replace(/\s+/g, '_') : 'HTTP_EXCEPTION';
-      
-      // If it's a validation pipe error, there might be detailed message array
-      if (typeof resBody === 'object' && Array.isArray(resBody.message)) {
-        details = resBody.message;
-        message = 'Validation failed';
-        code = 'VALIDATION_ERROR';
+      const responseBody = exception.getResponse();
+      if (typeof responseBody === 'object' && responseBody !== null) {
+        const body = responseBody as Record<string, unknown>;
+        message = (body.message as string | string[]) || exception.message;
+        errorCode = (body.error as string) || 'BAD_REQUEST';
+      } else {
+        message = responseBody as string;
       }
     } else if (exception instanceof Error) {
       message = exception.message;
-      code = exception.name.toUpperCase().replace(/\s+/g, '_');
-      console.error('Unhandled Exception:', exception);
     }
 
+    const errors = Array.isArray(message)
+      ? message.map((msg) => ({ code: errorCode, message: msg }))
+      : [{ code: errorCode, message: message }];
+
     response.status(status).json({
-      success: false,
       data: null,
-      meta: null,
-      errors: {
-        code,
-        message,
-        details,
-        path: request.url,
+      meta: {
         timestamp: new Date().toISOString(),
+        path: request.url,
+        statusCode: status,
       },
+      errors,
     });
   }
 }

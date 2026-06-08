@@ -7,7 +7,7 @@ import { ArrowLeft, BookOpen, Clock, FileText } from 'lucide-react';
 
 export default function TOEICDetailPage() {
   const params = useParams();
-  const id = params.id as string;
+  const id = (params?.id as string) || '';
   const router = useRouter();
 
   const parts = [

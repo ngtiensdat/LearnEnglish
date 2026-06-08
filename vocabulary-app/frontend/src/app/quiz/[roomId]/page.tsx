@@ -12,8 +12,8 @@ import { ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
 export default function RoomQuizPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const roomId = params.roomId as string;
-  const roomName = searchParams.get('name') || '';
+  const roomId = (params?.roomId as string) || '';
+  const roomName = searchParams?.get('name') || '';
 
   const { token } = useAuthStore();
   const router = useRouter();

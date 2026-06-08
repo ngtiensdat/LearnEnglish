@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthStore } from '../store/useAuthStore';
 import { useRouter } from 'next/navigation';
@@ -7,6 +8,11 @@ import { useRouter } from 'next/navigation';
 export default function Navbar() {
   const { token, role, logout } = useAuthStore();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -30,7 +36,7 @@ export default function Navbar() {
             For Business
           </Link>
           
-          {token ? (
+          {mounted && token ? (
             <>
               <Link href="/dashboard" className="hover:text-blue-400 transition-colors">
                 Dashboard

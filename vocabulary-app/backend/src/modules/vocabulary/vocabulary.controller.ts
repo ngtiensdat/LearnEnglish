@@ -22,9 +22,13 @@ export class VocabularyController {
 
   @Delete(':id')
   @UseGuards(RolesGuard)
-  @Roles(UserRole.admin)
-  async delete(@Param('id') id: string) {
-    return this.vocabularyService.delete(id);
+  @Roles(UserRole.admin, UserRole.teacher)
+  async delete(
+    @GetUser('id') userId: string,
+    @GetUser('role') role: UserRole,
+    @Param('id') id: string,
+  ) {
+    return this.vocabularyService.delete(id, userId, role);
   }
 
   @Get('list/:roomId')
@@ -42,7 +46,7 @@ export class VocabularyController {
   }
 
   @Post('review')
-  async review(@Body() dto: ReviewVocabDto) {
-    return this.vocabularyService.reviewVocab(dto);
+  async review(@GetUser('id') userId: string, @Body() dto: ReviewVocabDto) {
+    return this.vocabularyService.reviewVocab(userId, dto);
   }
 }

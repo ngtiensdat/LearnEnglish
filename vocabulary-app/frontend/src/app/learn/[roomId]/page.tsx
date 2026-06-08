@@ -11,7 +11,7 @@ import { ArrowLeft, BookOpen, Volume2, CheckCircle2 } from 'lucide-react';
 
 export default function RoomVocabPage() {
   const params = useParams();
-  const roomId = params.roomId as string;
+  const roomId = (params?.roomId as string) || '';
   const { token } = useAuthStore();
   const router = useRouter();
 

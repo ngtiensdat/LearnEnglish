@@ -1,6 +1,5 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -14,22 +13,35 @@ enum UserRole {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String
-  email     String   @unique
-  password  String
-  role      UserRole @default(student)
-  createdAt DateTime @default(now())
+  id             String          @id @default(uuid())
+  username       String
+  email          String          @unique
+  password       String
+  role           UserRole        @default(student)
+  createdAt      DateTime        @default(now())
+  rooms          Room[]
+  vocabularies   Vocabulary[]
+  studentAnswers StudentAnswer[]
+  histories      History[]
+  toeicResults   ToeicResult[]
+  stats          Stat[]
 }
 
 model Room {
-  id          String     @id @default(uuid())
-  name        String     @unique
-  password    String
-  createdBy   String     
-  showScore   Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-  questions   Question[]
+  id             String          @id @default(uuid())
+  name           String          @unique
+  password       String
+  createdBy      String     
+  creator        User            @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  showScore      Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  questions      Question[]
+  vocabularies   Vocabulary[]
+  studentAnswers StudentAnswer[]
+  histories      History[]
+  stats          Stat[]
+
+  @@index([createdBy])
 }
 
 model Question {
@@ -40,6 +52,8 @@ model Question {
   roomId        String
   room          Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
+
+  @@index([roomId])
 }
 
 model Vocabulary {
@@ -48,35 +62,52 @@ model Vocabulary {
   meaning     String
   example     String?
   roomId      String
+  room        Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
   creator     String
+  user        User     @relation(fields: [creator], references: [id], onDelete: Cascade)
   interval    Int      @default(1)    // Spaced repetition interval in days
   easeFactor  Float    @default(2.5)  // Spaced repetition ease factor (SuperMemo-2)
   repetitions Int      @default(0)    // Consecutive correct reviews
   nextReview  DateTime @default(now())
+
+  @@index([roomId])
+  @@index([creator])
+  @@index([nextReview])
 }
 
 model StudentAnswer {
   id          String   @id @default(uuid())
   roomId      String
+  room        Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
   studentId   String
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   answers     Json     
   score       Int      @default(0)
   completedAt DateTime @default(now())
+
+  @@index([roomId])
+  @@index([studentId])
 }
 
 model History {
   id        String   @id @default(uuid())
   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   type      String   
   action    String
   roomId    String?
+  room      Room?    @relation(fields: [roomId], references: [id], onDelete: Cascade)
   details   String?
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([roomId])
 }
 
 model ToeicResult {
   id          String   @id @default(uuid())
   userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   testId      String
   part        String
   answers     Json     
@@ -84,12 +115,20 @@ model ToeicResult {
   total       Int
   explanation String?  
   completedAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([testId])
 }
 
 model Stat {
   id          String   @id @default(uuid())
   userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   roomId      String
+  room        Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
   progress    Float    @default(0)
   lastLearned DateTime @default(now())
+
+  @@index([userId])
+  @@index([roomId])
 }

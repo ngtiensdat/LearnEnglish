@@ -33,8 +33,8 @@ export class LearningController {
     return this.learningService.submitToeic(userId, dto);
   }
 
-  @Get('toeic/results/:userId')
-  async getToeicResults(@Param('userId') userId: string) {
+  @Get('toeic/results')
+  async getToeicResults(@GetUser('id') userId: string) {
     return this.learningService.getToeicResults(userId);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { CreateVocabDto } from './dto/create-vocab.dto';
 import { ReviewVocabDto } from './dto/review-vocab.dto';
@@ -26,12 +26,16 @@ export class VocabularyService {
     });
   }
 
-  async delete(vocabId: string) {
+  async delete(vocabId: string, userId: string, role: string) {
     const vocab = await this.prisma.vocabulary.findUnique({
       where: { id: vocabId },
     });
     if (!vocab) {
       throw new NotFoundException('Không tìm thấy từ vựng');
+    }
+
+    if (role !== 'admin' && vocab.creator !== userId) {
+      throw new ForbiddenException('Bạn không có quyền xóa từ vựng này');
     }
 
     await this.prisma.vocabulary.delete({
@@ -54,12 +58,16 @@ export class VocabularyService {
     });
   }
 
-  async reviewVocab(dto: ReviewVocabDto) {
+  async reviewVocab(userId: string, dto: ReviewVocabDto) {
     const vocab = await this.prisma.vocabulary.findUnique({
       where: { id: dto.vocabId },
     });
     if (!vocab) {
       throw new NotFoundException('Không tìm thấy từ vựng');
+    }
+
+    if (vocab.creator !== userId) {
+      throw new ForbiddenException('Bạn không có quyền ôn tập từ vựng này');
     }
 
     const rating = dto.rating;

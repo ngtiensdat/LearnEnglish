@@ -3,7 +3,7 @@ import { PrismaService } from '../../database/prisma.service';
 import { JoinRoomDto } from './dto/join-room.dto';
 import { SubmitQuizDto } from './dto/submit-quiz.dto';
 import { SubmitToeicDto } from './dto/submit-toeic.dto';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -68,13 +68,13 @@ export class LearningService {
 
   async submitToeic(userId: string, dto: SubmitToeicDto) {
     const { testId, part, answers } = dto;
-    const toeicDir = path.join(process.cwd(), '../frontend/src/data/toeic');
+    const toeicDir = path.join(__dirname, '../../data/toeic');
 
-    let testData = { title: '', questions: [] };
+    let testData: { title: string; questions: any[] } = { title: '', questions: [] };
 
     if (part === 'full') {
       const parts = ['part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7'];
-      let allQuestions = [];
+      let allQuestions: any[] = [];
 
       for (const p of parts) {
         const filePath = path.join(toeicDir, `test${testId}`, `${p}.json`);
