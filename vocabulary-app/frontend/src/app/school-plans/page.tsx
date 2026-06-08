@@ -2,20 +2,34 @@
 
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export default function SchoolPlansPage() {
+  const { t } = useLanguageStore();
+
   const plans = [
     {
-      name: 'Classroom Lite',
-      price: '$49/mo',
-      desc: 'Perfect for single classrooms and tutoring groups.',
-      features: ['Up to 40 students', 'Vocabulary & Quiz room builder', 'Standard analytical reports', 'Email support']
+      name: t('schoolPlans.plans.lite.name'),
+      price: t('schoolPlans.plans.lite.price'),
+      desc: t('schoolPlans.plans.lite.desc'),
+      features: [
+        t('schoolPlans.plans.lite.features.0'),
+        t('schoolPlans.plans.lite.features.1'),
+        t('schoolPlans.plans.lite.features.2'),
+        t('schoolPlans.plans.lite.features.3'),
+      ]
     },
     {
-      name: 'School Pro',
-      price: '$199/mo',
-      desc: 'Designed for institutions and complete departments.',
-      features: ['Unlimited students', 'Advanced analytics dashboard', 'Premium IELTS & TOEIC mock exams', '24/7 dedicated support', 'Custom school logo branding'],
+      name: t('schoolPlans.plans.pro.name'),
+      price: t('schoolPlans.plans.pro.price'),
+      desc: t('schoolPlans.plans.pro.desc'),
+      features: [
+        t('schoolPlans.plans.pro.features.0'),
+        t('schoolPlans.plans.pro.features.1'),
+        t('schoolPlans.plans.pro.features.2'),
+        t('schoolPlans.plans.pro.features.3'),
+        t('schoolPlans.plans.pro.features.4'),
+      ],
       popular: true
     }
   ];
@@ -23,9 +37,9 @@ export default function SchoolPlansPage() {
   return (
     <div className="space-y-12 py-4">
       <div className="text-center py-12 max-w-xl mx-auto space-y-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">School & Institutional Plans</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">{t('schoolPlans.title')}</h1>
         <p className="text-slate-400 text-sm">
-          Deploy Learn English across classrooms, institutions, or entire schools with robust reporting.
+          {t('schoolPlans.desc')}
         </p>
       </div>
 
@@ -45,7 +59,7 @@ export default function SchoolPlansPage() {
                 </div>
                 {plan.popular && (
                   <span className="bg-blue-600 text-white text-[10px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">
-                    Popular
+                    {t('schoolPlans.popular')}
                   </span>
                 )}
               </div>
@@ -55,15 +69,15 @@ export default function SchoolPlansPage() {
               <ul className="space-y-3">
                 {plan.features.map((feat, fidx) => (
                   <li key={fidx} className="flex items-center text-sm text-slate-300">
-                    <Check className="w-4 h-4 text-green-400 mr-2 flex-shrink-0" />
-                    <span>{feat}</span>
+                     <Check className="w-4 h-4 text-green-400 mr-2 flex-shrink-0" />
+                     <span>{feat}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition mt-6">
-              Get Started
+              {t('schoolPlans.getStarted')}
             </button>
           </div>
         ))}

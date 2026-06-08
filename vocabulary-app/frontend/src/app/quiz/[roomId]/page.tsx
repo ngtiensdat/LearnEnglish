@@ -7,6 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { apiClient } from '../../../lib/api-client';
 import { useAuthStore } from '../../../store/useAuthStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 import { ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
 
 export default function RoomQuizPage() {
@@ -16,6 +17,7 @@ export default function RoomQuizPage() {
   const roomName = searchParams?.get('name') || '';
 
   const { token } = useAuthStore();
+  const { t } = useLanguageStore();
   const router = useRouter();
 
   const [password, setPassword] = useState('');
@@ -33,7 +35,7 @@ export default function RoomQuizPage() {
 
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password.trim()) return toast.error('Vui lòng nhập mật khẩu phòng học');
+    if (!password.trim()) return toast.error(t('quizRoom.pwdWarning'));
     setJoining(true);
 
     try {
@@ -44,9 +46,9 @@ export default function RoomQuizPage() {
         password,
       });
       setRoom(res.data.room);
-      toast.success('Vào phòng học thành công! Bắt đầu làm Quiz.');
+      toast.success(t('quizRoom.pwdSuccess'));
     } catch (err: any) {
-      toast.error(err?.message || 'Mật khẩu không chính xác hoặc không thể tham gia phòng');
+      toast.error(err?.message || t('quizRoom.pwdError'));
     } finally {
       setJoining(false);
     }
@@ -58,7 +60,7 @@ export default function RoomQuizPage() {
 
   const handleSubmit = async () => {
     if (Object.keys(answers).length < room.questions.length) {
-      return toast.error('Vui lòng trả lời toàn bộ câu hỏi trước khi nộp');
+      return toast.error(t('quizRoom.toastWarning'));
     }
     setSubmitting(true);
 
@@ -74,9 +76,9 @@ export default function RoomQuizPage() {
       });
 
       setScore(res.data.score);
-      toast.success(`Nộp bài thành công! Kết quả: ${res.data.score}`);
+      toast.success(t('quizRoom.toastSuccess') + res.data.score);
     } catch (err: any) {
-      toast.error(err?.message || 'Gửi bài làm thất bại');
+      toast.error(err?.message || t('quizRoom.toastError'));
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +91,7 @@ export default function RoomQuizPage() {
           onClick={() => router.push('/dashboard')}
           className="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition"
         >
-          <ArrowLeft className="w-4 h-4" /> Quay lại Dashboard
+          <ArrowLeft className="w-4 h-4" /> {t('quizRoom.backBtn')}
         </button>
 
         <div className="card-glass p-8 space-y-6 text-center">
@@ -97,13 +99,13 @@ export default function RoomQuizPage() {
             <KeyRound className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">Yêu Cầu Mật Khẩu</h2>
-            <p className="text-xs text-slate-400 mt-2">Vui lòng nhập mật khẩu phòng để tải bộ câu hỏi luyện tập</p>
+            <h2 className="text-2xl font-bold text-white">{t('quizRoom.pwdTitle')}</h2>
+            <p className="text-xs text-slate-400 mt-2">{t('quizRoom.pwdDesc')}</p>
           </div>
           <form onSubmit={handleJoin} className="space-y-4">
             <input
               type="password"
-              placeholder="Mật khẩu phòng học"
+              placeholder={t('quizRoom.pwdPlaceholder')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -114,7 +116,7 @@ export default function RoomQuizPage() {
               disabled={joining}
               className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition"
             >
-              {joining ? 'Đang xác thực...' : 'Vào Lớp'}
+              {joining ? t('quizRoom.pwdSubmitLoading') : t('quizRoom.pwdSubmit')}
             </button>
           </form>
         </div>
@@ -131,12 +133,12 @@ export default function RoomQuizPage() {
           onClick={() => router.push('/dashboard')}
           className="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition"
         >
-          <ArrowLeft className="w-4 h-4" /> Quay lại Dashboard
+          <ArrowLeft className="w-4 h-4" /> {t('quizRoom.backBtn')}
         </button>
 
         <div className="card-glass p-6 text-center">
-          <h2 className="text-2xl font-bold text-white">Quiz Phòng: {roomName || room.id}</h2>
-          <p className="text-xs text-slate-400 mt-1">{room.questions.length} câu hỏi luyện tập</p>
+          <h2 className="text-2xl font-bold text-white">{t('quizRoom.title')} {roomName || room.id}</h2>
+          <p className="text-xs text-slate-400 mt-1">{room.questions.length} {t('quizRoom.subTitle')}</p>
         </div>
 
         {score !== null ? (
@@ -145,16 +147,16 @@ export default function RoomQuizPage() {
               <CheckCircle2 className="w-10 h-10" />
             </div>
             <div>
-              <h3 className="text-3xl font-bold text-white">Hoàn Thành!</h3>
+              <h3 className="text-3xl font-bold text-white">{t('quizRoom.scoreTitle')}</h3>
               <p className="text-lg text-slate-300 mt-2">
-                Kết quả bài làm của bạn: <span className="text-green-400 font-bold">{score}</span>
+                {t('quizRoom.scoreResult')} <span className="text-green-400 font-bold">{score}</span>
               </p>
             </div>
             <button
               onClick={() => router.push('/dashboard')}
               className="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition"
             >
-              Về Dashboard
+              {t('quizRoom.dashboardBtn')}
             </button>
           </div>
         ) : (
@@ -162,7 +164,7 @@ export default function RoomQuizPage() {
             {room.questions.map((q: any, i: number) => (
               <div key={q.id} className="card-glass p-6 space-y-4 border-slate-800">
                 <p className="font-bold text-white">
-                  Câu {i + 1}: {q.content}
+                  {t('quizRoom.questionLabel')} {i + 1}: {q.content}
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {q.options.map((opt: string, j: number) => (
@@ -193,7 +195,7 @@ export default function RoomQuizPage() {
               disabled={submitting || Object.keys(answers).length < room.questions.length}
               className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition disabled:opacity-40"
             >
-              {submitting ? 'Đang nộp bài...' : 'Nộp Bài'}
+              {submitting ? t('quizRoom.submitBtnLoading') : t('quizRoom.submitBtn')}
             </button>
           </div>
         )}

@@ -3,12 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, BookOpen, Clock, FileText } from 'lucide-react';
+import { ArrowLeft, Clock, FileText } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export default function TOEICDetailPage() {
   const params = useParams();
   const id = (params?.id as string) || '';
   const router = useRouter();
+  const { t } = useLanguageStore();
 
   const parts = [
     { num: 1, desc: 'Part 1: Photographs' },
@@ -26,19 +28,19 @@ export default function TOEICDetailPage() {
         onClick={() => router.push('/toeic')}
         className="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition"
       >
-        <ArrowLeft className="w-4 h-4" /> Quay lại Hub
+        <ArrowLeft className="w-4 h-4" /> {t('toeic.backBtn')}
       </button>
 
       <div className="card-glass p-8 space-y-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-white">New Economy TOEIC Test {id}</h1>
+          <h1 className="text-3xl font-extrabold text-white">{t('toeic.fullTest')} {id}</h1>
           <p className="text-sm text-slate-400 mt-2">
-            Luyện tập từng phần thi Listening/Reading hoặc làm bài kiểm tra đầy đủ (Full Test).
+            {t('toeic.detailSub')}
           </p>
         </div>
 
         <div className="space-y-4 pt-4 border-t border-slate-800">
-          <h2 className="text-xl font-bold text-blue-400">Chọn phần thi muốn làm</h2>
+          <h2 className="text-xl font-bold text-blue-400">{t('toeic.choosePart')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {parts.map((p) => (
               <Link
@@ -57,7 +59,7 @@ export default function TOEICDetailPage() {
               href={`/toeic/${id}/full`}
               className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400 text-white font-extrabold rounded-xl transition shadow-lg shadow-orange-500/20"
             >
-              <Clock className="w-5 h-5 mr-2" /> Làm Full Test (120 phút)
+              <Clock className="w-5 h-5 mr-2" /> {t('toeic.fullTestBtn')}
             </Link>
           </div>
         </div>

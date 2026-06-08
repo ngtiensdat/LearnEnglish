@@ -2,26 +2,29 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { BookOpen, Clock, Award } from 'lucide-react';
+import { BookOpen, Clock } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 const testItems = [
-  { id: '224', title: 'New Economy TOEIC Test 1', time: '120 phút', questions: '7 phần thi | 200 câu hỏi' },
-  { id: '224', title: 'New Economy TOEIC Test 2', time: '120 phút', questions: '7 phần thi | 200 câu hỏi' },
-  { id: '224', title: 'New Economy TOEIC Test 3', time: '120 phút', questions: '7 phần thi | 200 câu hỏi' },
-  { id: '224', title: 'New Economy TOEIC Test 4', time: '120 phút', questions: '7 phần thi | 200 câu hỏi' },
-  { id: '224', title: 'New Economy TOEIC Test 5', time: '120 phút', questions: '7 phần thi | 200 câu hỏi' },
-  { id: '224', title: 'New Economy TOEIC Test 6', time: '120 phút', questions: '7 phần thi | 200 câu hỏi' }
+  { id: '224', title: 'New Economy TOEIC Test 1' },
+  { id: '224', title: 'New Economy TOEIC Test 2' },
+  { id: '224', title: 'New Economy TOEIC Test 3' },
+  { id: '224', title: 'New Economy TOEIC Test 4' },
+  { id: '224', title: 'New Economy TOEIC Test 5' },
+  { id: '224', title: 'New Economy TOEIC Test 6' }
 ];
 
 export default function TOEICHubPage() {
+  const { t } = useLanguageStore();
+
   return (
     <div className="space-y-8 py-4">
       <div className="text-center space-y-2">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 bg-clip-text text-transparent">
-          TOEIC Practice Hub
+          {t('toeic.title')}
         </h1>
         <p className="text-slate-400 max-w-xl mx-auto text-sm">
-          Full-length TOEIC tests with instant scoring, detailed explanations, and progress tracking.
+          {t('toeic.desc')}
         </p>
       </div>
 
@@ -32,16 +35,16 @@ export default function TOEICHubPage() {
               <h2 className="testitem-title text-lg font-bold text-white mb-2">{item.title}</h2>
               <div className="testitem-info-wrapper space-y-1 text-xs text-slate-400">
                 <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-blue-400" /> {item.time}
+                  <Clock className="w-3.5 h-3.5 text-blue-400" /> 120 {t('toeic.mins')}
                 </span>
                 <span className="flex items-center gap-1">
-                  <BookOpen className="w-3.5 h-3.5 text-green-400" /> {item.questions}
+                  <BookOpen className="w-3.5 h-3.5 text-green-400" /> {t('toeic.partsAndQuestions')}
                 </span>
               </div>
             </div>
             <div className="testitem-start-test mt-4">
               <Link href={`/toeic/${item.id}`} className="btn">
-                Chi tiết đề thi
+                {t('toeic.detailBtn')}
               </Link>
             </div>
           </div>

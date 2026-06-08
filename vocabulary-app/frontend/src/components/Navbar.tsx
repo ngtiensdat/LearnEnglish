@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthStore } from '../store/useAuthStore';
 import { useRouter } from 'next/navigation';
-import { useLanguageStore } from '../store/useLanguageStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export default function Navbar() {
   const { token, role, logout } = useAuthStore();

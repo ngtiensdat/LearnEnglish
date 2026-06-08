@@ -16,6 +16,7 @@ import {
 } from 'chart.js';
 import { apiClient } from '../../lib/api-client';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 import { useRouter } from 'next/navigation';
 import { Award, BarChart2, BookOpen, Clock, RefreshCw } from 'lucide-react';
 
@@ -33,6 +34,7 @@ const INITIAL_STATS = {
 
 export default function StatsPage() {
   const { token, userId } = useAuthStore();
+  const { t, language } = useLanguageStore();
   const [stats, setStats] = useState<any>(null);
   const [userName, setUserName] = useState('User');
   const [loading, setLoading] = useState(true);
@@ -98,21 +100,22 @@ export default function StatsPage() {
   }, [userId]);
 
   const handleResetDev = () => {
-    if (window.confirm('Bạn muốn reset lại toàn bộ dữ liệu học tập trên máy này?')) {
+    if (window.confirm(t('statsPage.resetConfirm'))) {
       localStorage.removeItem('userStats');
+      toast.success(t('statsPage.confirmResetToast'));
       window.location.reload();
     }
   };
 
   if (loading || !stats) {
-    return <div className="p-8 text-center text-slate-400">Đang tải biểu đồ và tiến trình...</div>;
+    return <div className="p-8 text-center text-slate-400">{t('statsPage.loading')}</div>;
   }
 
   const chartData = {
-    labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+    labels: language === 'vi' ? ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
       {
-        label: 'Tiến độ học tập (%)',
+        label: t('statsPage.chartLabel'),
         data: stats.dailyProgress || [0, 0, 0, 0, 0, 0, 0],
         borderColor: '#10b981',
         backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -157,19 +160,19 @@ export default function StatsPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">{userName}</h1>
-              <p className="text-slate-400 text-sm mt-1">Học sinh tích cực</p>
+              <p className="text-slate-400 text-sm mt-1">{t('statsPage.activeStudent')}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-12 text-center">
             <div>
-              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Tiến Độ Tổng</p>
+              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{t('statsPage.overallProgress')}</p>
               <p className="text-3xl font-extrabold text-green-400 mt-1">{stats.progress || 0}%</p>
             </div>
             <div>
-              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Học Lần Cuối</p>
+              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{t('statsPage.lastStudied')}</p>
               <p className="text-lg font-bold text-slate-200 mt-2">
-                {stats.lastLearned ? new Date(stats.lastLearned).toLocaleDateString('vi-VN') : 'Chưa học'}
+                {stats.lastLearned ? new Date(stats.lastLearned).toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US') : t('statsPage.notStudiedYet')}
               </p>
             </div>
           </div>
@@ -179,7 +182,7 @@ export default function StatsPage() {
         <div className="card-glass p-6 border-slate-800 space-y-4">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
             <BarChart2 className="w-5 h-5 text-emerald-400" />
-            Biểu Đồ Tiến Độ 7 Ngày
+            {t('statsPage.chartTitle')}
           </h2>
           <div className="h-64 w-full">
             <Line data={chartData} options={chartOptions} />
@@ -192,17 +195,17 @@ export default function StatsPage() {
           <div className="card-glass p-6 border-slate-800 space-y-4">
             <h3 className="text-lg font-bold text-blue-400 flex items-center gap-2">
               <Award className="w-5 h-5" />
-              Lịch Sử Bài Làm Quiz
+              {t('statsPage.quizHistory')}
             </h3>
             {(!stats.quizHistory || stats.quizHistory.length === 0) ? (
-              <p className="text-sm text-slate-500 py-6 text-center">Chưa làm bài quiz nào</p>
+              <p className="text-sm text-slate-500 py-6 text-center">{t('statsPage.noQuizYet')}</p>
             ) : (
               <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                 {stats.quizHistory.slice(-5).reverse().map((q: any, i: number) => (
                   <div key={i} className="p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-sm">
                     <div>
                       <p className="font-semibold text-slate-200">{q.topic}</p>
-                      <p className="text-xs text-slate-500 mt-1">{new Date(q.date).toLocaleDateString('vi-VN')}</p>
+                      <p className="text-xs text-slate-500 mt-1">{new Date(q.date).toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US')}</p>
                     </div>
                     <span className="font-bold text-blue-400">{q.score}/{q.total}</span>
                   </div>
@@ -215,16 +218,16 @@ export default function StatsPage() {
           <div className="card-glass p-6 border-slate-800 space-y-4">
             <h3 className="text-lg font-bold text-purple-400 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
-              Chủ Đề Đã Học
+              {t('statsPage.studiedTopics')}
             </h3>
             {(!stats.learnHistory || stats.learnHistory.length === 0) ? (
-              <p className="text-sm text-slate-500 py-6 text-center">Chưa học chủ đề nào</p>
+              <p className="text-sm text-slate-500 py-6 text-center">{t('statsPage.noTopicYet')}</p>
             ) : (
               <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                 {stats.learnHistory.slice(-5).reverse().map((l: any, i: number) => (
                   <div key={i} className="p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-sm">
                     <span className="font-semibold text-slate-200">{l.topic}</span>
-                    <span className="text-xs text-slate-500">{new Date(l.date).toLocaleDateString('vi-VN')}</span>
+                    <span className="text-xs text-slate-500">{new Date(l.date).toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US')}</span>
                   </div>
                 ))}
               </div>
@@ -238,7 +241,7 @@ export default function StatsPage() {
             onClick={handleResetDev}
             className="inline-flex items-center text-xs text-red-500 hover:text-red-400 hover:underline gap-1"
           >
-            <RefreshCw className="w-3.5 h-3.5" /> Reset Dữ Liệu Luyện Tập
+            <RefreshCw className="w-3.5 h-3.5" /> {t('statsPage.resetBtn')}
           </button>
         </div>
       </div>

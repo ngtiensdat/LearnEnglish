@@ -3,9 +3,11 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, BookOpen, AlertCircle } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export default function IELTSAcademicPage() {
   const router = useRouter();
+  const { t } = useLanguageStore();
 
   return (
     <div className="max-w-2xl mx-auto py-8 space-y-6">
@@ -13,7 +15,7 @@ export default function IELTSAcademicPage() {
         onClick={() => router.push('/library')}
         className="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition"
       >
-        <ArrowLeft className="w-4 h-4" /> Quay lại Thư viện
+        <ArrowLeft className="w-4 h-4" /> {t('ielts.backBtn')}
       </button>
 
       <div className="card-glass p-8 text-center space-y-6 border border-slate-800">
@@ -21,16 +23,16 @@ export default function IELTSAcademicPage() {
           <BookOpen className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <h1 className="text-3xl font-extrabold text-white">IELTS Academic Preparation</h1>
+          <h1 className="text-3xl font-extrabold text-white">{t('ielts.acadTitle')}</h1>
           <p className="text-slate-400 text-sm max-w-md mx-auto">
-            Luyện thi IELTS Academic với AI đánh giá kỹ năng Viết & Nói, tự động chấm điểm bài đọc & nghe.
+            {t('ielts.acadDesc')}
           </p>
         </div>
 
         <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl max-w-md mx-auto flex items-center gap-3 text-left">
           <AlertCircle className="w-5 h-5 text-indigo-400 flex-shrink-0" />
           <p className="text-xs text-slate-300">
-            Dữ liệu IELTS đang được hoàn thiện. Trong thời gian này, vui lòng tham khảo các đề luyện thi TOEIC có sẵn.
+            {t('ielts.alert')}
           </p>
         </div>
 
@@ -38,7 +40,7 @@ export default function IELTSAcademicPage() {
           onClick={() => router.push('/toeic')}
           className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition"
         >
-          Luyện thi TOEIC Ngay
+          {t('ielts.toeicBtn')}
         </button>
       </div>
     </div>

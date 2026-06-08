@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Volume2, ZoomIn, CheckCircle2, AlertCircle } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,6 +16,7 @@ export default function TOEICTestPlayerPage() {
   const part = (params?.part as string) || '';
   const router = useRouter();
   const { token } = useAuthStore();
+  const { t } = useLanguageStore();
 
   const [data, setData] = useState<any>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -58,14 +60,14 @@ export default function TOEICTestPlayerPage() {
         }
       } catch (err) {
         console.error('Không thể tải đề:', err);
-        toast.error('Không thể tải dữ liệu đề thi');
+        toast.error(t('toeic.loadFailedToast'));
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, [id, part]);
+  }, [id, part, t]);
 
   const handleAnswer = (qId: string, selected: string) => {
     setAnswers((prev) => ({ ...prev, [qId]: selected }));
@@ -73,7 +75,7 @@ export default function TOEICTestPlayerPage() {
 
   const handleSubmit = async () => {
     if (submitting) return;
-    if (!token) return toast.error('Vui lòng đăng nhập để nộp bài.');
+    if (!token) return toast.error(t('toeic.loginRequired'));
 
     setSubmitting(true);
     try {
@@ -89,29 +91,29 @@ export default function TOEICTestPlayerPage() {
       });
 
       const result = res.data;
-      toast.success(`🎉 Nộp bài thành công! Điểm của bạn: ${result.score}/${result.total}`);
+      toast.success(`${t('toeic.submitSuccess')}${result.score}/${result.total}`);
       setScore(result.score);
       setTotal(result.total);
     } catch (error: any) {
       console.error('Lỗi nộp bài:', error);
-      toast.error(error?.message || 'Có lỗi xảy ra khi nộp bài');
+      toast.error(error?.message || t('toeic.submitError'));
     } finally {
       setSubmitting(false);
     }
   };
 
   if (loading) {
-    return <div className="p-8 text-center text-slate-400">Đang tải đề thi...</div>;
+    return <div className="p-8 text-center text-slate-400">{t('toeic.loading')}</div>;
   }
 
   if (!data || !data.questions || data.questions.length === 0) {
     return (
       <div className="max-w-md mx-auto text-center py-20 space-y-4">
         <AlertCircle className="w-16 h-16 text-slate-600 mx-auto" />
-        <h2 className="text-2xl font-bold text-white">Lỗi Tải Đề</h2>
-        <p className="text-slate-400">Không tìm thấy dữ liệu đề thi tương ứng.</p>
+        <h2 className="text-2xl font-bold text-white">{t('toeic.loadError')}</h2>
+        <p className="text-slate-400">{t('toeic.loadErrorDesc')}</p>
         <button onClick={() => router.push(`/toeic/${id}`)} className="btn-primary">
-          Quay lại chi tiết
+          {t('toeic.backDetailBtn')}
         </button>
       </div>
     );
@@ -126,12 +128,12 @@ export default function TOEICTestPlayerPage() {
           onClick={() => router.push(`/toeic/${id}`)}
           className="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition"
         >
-          <ArrowLeft className="w-4 h-4" /> Quay lại chi tiết
+          <ArrowLeft className="w-4 h-4" /> {t('toeic.backDetailBtn')}
         </button>
 
         <div className="card-glass p-6 text-center">
           <h1 className="text-3xl font-extrabold text-white">{data.title}</h1>
-          <p className="text-xs text-slate-400 mt-1">{data.questions.length} câu hỏi</p>
+          <p className="text-xs text-slate-400 mt-1">{data.questions.length} {t('toeic.question').toLowerCase()}</p>
         </div>
 
         <div className="space-y-6">
@@ -142,7 +144,7 @@ export default function TOEICTestPlayerPage() {
             return (
               <div key={q.id} className="card-glass p-6 border-slate-800 space-y-4">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-800/80">
-                  <span className="font-bold text-blue-400">Câu {q.id}</span>
+                  <span className="font-bold text-blue-400">{t('toeic.question')} {q.id}</span>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-6">
@@ -213,15 +215,15 @@ export default function TOEICTestPlayerPage() {
         {/* Nút nộp bài */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 card-glass border-slate-800">
           <div>
-            <p className="text-sm text-slate-400">Hoàn thành các câu hỏi của bạn</p>
-            <p className="text-xs text-slate-500 mt-1">Đã làm: {Object.keys(answers).length} / {data.questions.length}</p>
+            <p className="text-sm text-slate-400">{t('toeic.footerDesc')}</p>
+            <p className="text-xs text-slate-500 mt-1">{t('toeic.answered')}: {Object.keys(answers).length} / {data.questions.length}</p>
           </div>
           <button
             onClick={handleSubmit}
             disabled={submitting || Object.keys(answers).length === 0}
             className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400 text-white font-extrabold rounded-xl transition shadow-lg shadow-orange-500/20 disabled:opacity-40"
           >
-            {submitting ? 'Đang nộp bài...' : 'Nộp Bài làm'}
+            {submitting ? t('toeic.submittingBtn') : t('toeic.submitBtn')}
           </button>
         </div>
 
@@ -235,9 +237,9 @@ export default function TOEICTestPlayerPage() {
               <CheckCircle2 className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">Kết quả thi của bạn</h3>
+              <h3 className="text-xl font-bold text-white">{t('toeic.resultTitle')}</h3>
               <p className="text-3xl font-extrabold text-green-400 mt-2">
-                {score} / {total} câu đúng
+                {score} / {total} {t('toeic.resultDesc')}
               </p>
             </div>
           </motion.div>

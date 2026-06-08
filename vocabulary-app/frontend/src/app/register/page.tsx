@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { apiClient } from '../../lib/api-client';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -15,6 +16,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { setCredentials } = useAuthStore();
+  const { t } = useLanguageStore();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,7 +40,7 @@ export default function RegisterPage() {
       router.push('/dashboard');
     } catch (err: any) {
       console.error(err);
-      setError(err?.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+      setError(err?.message || t('register.error'));
     } finally {
       setLoading(false);
     }
@@ -53,8 +55,8 @@ export default function RegisterPage() {
         transition={{ duration: 0.5 }}
       >
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-white">Create Account</h2>
-          <p className="text-sm text-slate-400 mt-2">Start your English journey today</p>
+          <h2 className="text-3xl font-extrabold text-white">{t('register.title')}</h2>
+          <p className="text-sm text-slate-400 mt-2">{t('register.subtitle')}</p>
         </div>
 
         {error && (
@@ -65,48 +67,48 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Username</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('register.username')}</label>
             <input
               type="text"
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Your name"
+              placeholder={t('register.usernamePlaceholder')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('register.email')}</label>
             <input
               type="email"
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="name@example.com"
+              placeholder={t('register.emailPlaceholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('register.password')}</label>
             <input
               type="password"
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="•••••••• (Min 6 characters)"
+              placeholder={t('register.passwordPlaceholder')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Role</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('register.role')}</label>
             <select
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="admin">Administrator</option>
+              <option value="student">{t('register.student')}</option>
+              <option value="teacher">{t('register.teacher')}</option>
+              <option value="admin">{t('register.admin')}</option>
             </select>
           </div>
 
@@ -115,15 +117,15 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition disabled:opacity-50"
           >
-            {loading ? 'Creating Account...' : 'Register'}
+            {loading ? t('register.loading') : t('register.submit')}
           </button>
         </form>
 
         <div className="text-center pt-2 border-t border-slate-800">
           <p className="text-sm text-slate-400">
-            Already have an account?{' '}
+            {t('register.hasAccount')}{' '}
             <Link href="/login" className="text-blue-400 hover:underline">
-              Sign In here
+              {t('register.signInHere')}
             </Link>
           </p>
         </div>

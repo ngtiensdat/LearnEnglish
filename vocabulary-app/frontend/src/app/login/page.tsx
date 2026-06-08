@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { apiClient } from '../../lib/api-client';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { setCredentials } = useAuthStore();
+  const { t } = useLanguageStore();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +34,7 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (err: any) {
       console.error(err);
-      setError(err?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản.');
+      setError(err?.message || t('login.error'));
     } finally {
       setLoading(false);
     }
@@ -47,8 +49,8 @@ export default function LoginPage() {
         transition={{ duration: 0.5 }}
       >
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-white">Welcome Back</h2>
-          <p className="text-sm text-slate-400 mt-2">Sign in to your Learn English account</p>
+          <h2 className="text-3xl font-extrabold text-white">{t('login.title')}</h2>
+          <p className="text-sm text-slate-400 mt-2">{t('login.subtitle')}</p>
         </div>
 
         {error && (
@@ -59,7 +61,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('login.email')}</label>
             <input
               type="email"
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -70,7 +72,7 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('login.password')}</label>
             <input
               type="password"
               className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,15 +88,15 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition disabled:opacity-50"
           >
-            {loading ? 'Logging in...' : 'Sign In'}
+            {loading ? t('login.loggingIn') : t('login.signIn')}
           </button>
         </form>
 
         <div className="text-center pt-2 border-t border-slate-800">
           <p className="text-sm text-slate-400">
-            Don't have an account?{' '}
+            {t('login.noAccount')}{' '}
             <Link href="/register" className="text-blue-400 hover:underline">
-              Register here
+              {t('login.registerHere')}
             </Link>
           </p>
         </div>

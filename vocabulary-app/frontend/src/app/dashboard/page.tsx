@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import * as XLSX from 'xlsx';
 import { apiClient } from '../../lib/api-client';
 import { useAuthStore } from '../../store/useAuthStore';
-import { useLanguageStore } from '../../store/useLanguageStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
 import {
   BookOpen,
   FolderPlus,
@@ -106,7 +106,7 @@ export default function DashboardPage() {
       setRooms(Array.isArray(res.data) ? res.data : []);
     } catch (error: any) {
       console.error('Fetch rooms error:', error);
-      toast.error(error?.message || 'Không thể tải danh sách phòng');
+      toast.error(error?.message || (language === 'vi' ? 'Không thể tải danh sách phòng' : 'Unable to load rooms'));
       setRooms([]);
     }
   };
@@ -119,47 +119,47 @@ export default function DashboardPage() {
 
   // === TẠO PHÒNG ===
   const createRoom = async () => {
-    if (!roomName.trim()) return toast.error('Tên phòng không được để trống');
+    if (!roomName.trim()) return toast.error(language === 'vi' ? 'Tên phòng không được để trống' : 'Room name cannot be empty');
     try {
       await apiClient.post('/rooms', { name: roomName, password: roomPassword, showScore });
-      toast.success('Tạo phòng thành công');
+      toast.success(t('dashboard.createSuccess'));
       setRoomName('');
       setRoomPassword('');
       setShowScore(true);
       fetchRooms();
     } catch (error: any) {
-      toast.error('Tạo phòng thất bại: ' + (error?.message || 'Lỗi'));
+      toast.error(t('dashboard.createFailed') + (error?.message || ''));
     }
   };
 
   // === THAM GIA PHÒNG ===
   const joinRoom = async () => {
-    if (!roomName.trim()) return toast.error('Tên phòng không được để trống');
+    if (!roomName.trim()) return toast.error(language === 'vi' ? 'Tên phòng không được để trống' : 'Room name cannot be empty');
     try {
       const res = await apiClient.post('/learning/join', { name: roomName, password: roomPassword });
       setRoomName('');
       setRoomPassword('');
-      toast.success('Tham gia thành công');
+      toast.success(t('dashboard.joinSuccess'));
       router.push(`/learn/${res.data.room.id}`);
     } catch (error: any) {
-      toast.error(error?.message || 'Tham gia thất bại');
+      toast.error(error?.message || t('dashboard.joinFailed'));
     }
   };
 
   // === THÊM TỪ VỰNG ===
   const addVocab = async () => {
     if (!vocab.word.trim() || !vocab.meaning.trim() || !vocab.roomId.trim()) {
-      return toast.error('Vui lòng điền đầy đủ từ, nghĩa và ID phòng');
+      return toast.error(language === 'vi' ? 'Vui lòng điền đầy đủ từ, nghĩa và ID phòng' : 'Please fill in word, meaning, and room ID');
     }
     try {
       await apiClient.post('/vocab', vocab);
       setVocab({ word: '', meaning: '', example: '', roomId: '' });
-      toast.success('Thêm từ thành công');
+      toast.success(t('dashboard.addVocabSuccess'));
       if (selectedRoomId === vocab.roomId) {
         fetchVocabList(vocab.roomId);
       }
     } catch (error: any) {
-      toast.error('Thêm thất bại: ' + (error?.message || 'Lỗi'));
+      toast.error(t('dashboard.addVocabFailed') + (error?.message || ''));
     }
   };
 
@@ -167,7 +167,7 @@ export default function DashboardPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !vocab.roomId.trim()) {
-      toast.error('Vui lòng chọn file và nhập ID phòng');
+      toast.error(language === 'vi' ? 'Vui lòng chọn file và nhập ID phòng' : 'Please select a file and enter room ID');
       return;
     }
     const reader = new FileReader();
@@ -193,13 +193,13 @@ export default function DashboardPage() {
             count++;
           }
         }
-        toast.success(`Đã tải lên thành công ${count} từ vựng`);
+        toast.success(t('dashboard.uploadSuccessCount').replace('{count}', String(count)));
         if (selectedRoomId === vocab.roomId) {
           fetchVocabList(vocab.roomId);
         }
       } catch (error: any) {
         console.error(error);
-        toast.error('Tải lên thất bại: ' + (error?.message || error));
+        toast.error(t('dashboard.uploadFailed') + (error?.message || error));
       }
     };
     reader.readAsArrayBuffer(file);
@@ -207,18 +207,18 @@ export default function DashboardPage() {
 
   // === THÊM CÂU HỎI QUIZ ===
   const addQuizQuestions = async () => {
-    if (!selectedRoomId) return toast.error('Vui lòng chọn phòng');
+    if (!selectedRoomId) return toast.error(t('dashboard.roomRequired'));
     for (const q of quizQuestions) {
       if (!q.content.trim() || q.options.some((opt: string) => !opt.trim())) {
-        return toast.error('Vui lòng điền đầy đủ câu hỏi và 4 đáp án');
+        return toast.error(t('dashboard.optError'));
       }
     }
     try {
       await apiClient.post(`/rooms/${selectedRoomId}/questions`, { questions: quizQuestions });
       setQuizQuestions([{ content: '', options: ['', '', '', ''], correctAnswer: 0 }]);
-      toast.success('Thêm câu hỏi thành công');
+      toast.success(t('dashboard.saveQuizSuccess'));
     } catch (error: any) {
-      toast.error(error?.message || 'Thêm thất bại');
+      toast.error(error?.message || t('dashboard.saveQuizFailed'));
     }
   };
 
@@ -238,19 +238,19 @@ export default function DashboardPage() {
   };
 
   const removeQuestion = (index: number) => {
-    if (quizQuestions.length === 1) return toast.error('Phải có ít nhất 1 câu hỏi');
+    if (quizQuestions.length === 1) return toast.error(t('dashboard.minOneQuestion'));
     setQuizQuestions(quizQuestions.filter((_, i) => i !== index));
   };
 
   // === XÓA PHÒNG ===
   const deleteRoom = async (id: string) => {
-    if (!window.confirm('Bạn chắc chắn muốn xóa phòng học này cùng toàn bộ câu hỏi liên quan?')) return;
+    if (!window.confirm(t('dashboard.deleteConfirmText'))) return;
     try {
       await apiClient.delete(`/rooms/${id}`);
-      toast.success('Xóa phòng thành công');
+      toast.success(t('dashboard.deleteSuccess'));
       fetchRooms();
     } catch (error: any) {
-      toast.error(error?.message || 'Xóa thất bại');
+      toast.error(error?.message || t('dashboard.deleteFailed'));
     }
   };
 
@@ -259,9 +259,9 @@ export default function DashboardPage() {
     try {
       await apiClient.delete(`/vocab/${vocabId}`);
       setVocabList((prev) => prev.filter((v) => v.id !== vocabId));
-      toast.success('Xóa từ vựng thành công');
+      toast.success(t('dashboard.deleteVocabSuccess'));
     } catch (error: any) {
-      toast.error('Xóa thất bại');
+      toast.error(t('dashboard.deleteVocabFailed'));
     }
   };
 
@@ -271,7 +271,7 @@ export default function DashboardPage() {
       const res = await apiClient.get(`/vocab/room/${roomId}`);
       setVocabList(res.data || []);
     } catch (error: any) {
-      toast.error('Không thể tải từ vựng');
+      toast.error(t('dashboard.loadVocabFailed'));
     }
   };
 
@@ -450,7 +450,7 @@ export default function DashboardPage() {
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search lessons, tests, vocabularies..."
+                placeholder={t('dashboard.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
@@ -479,8 +479,8 @@ export default function DashboardPage() {
                   <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm lg:col-span-2 flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-sm font-bold text-slate-800">TOEIC Score Progress</h3>
-                        <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Target: 750+</span>
+                        <h3 className="text-sm font-bold text-slate-800">{t('dashboard.scoreProgress')}</h3>
+                        <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">{t('dashboard.targetText')}</span>
                       </div>
                       <div className="h-48 relative">
                         <Line data={progressData} options={progressOptions} />
@@ -496,9 +496,9 @@ export default function DashboardPage() {
                         <Flame className="w-8 h-8 text-amber-500 fill-amber-500 mb-2" />
                         <div>
                           <p className="text-xl font-bold text-slate-800">
-                            {dashboardStats ? `${dashboardStats.streak} Days` : '12 Days'}
+                            {dashboardStats ? `${dashboardStats.streak} ${t('dashboard.streakDays')}` : `12 ${t('dashboard.streakDays')}`}
                           </p>
-                          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Daily Streak</p>
+                          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{t('dashboard.streak')}</p>
                         </div>
                       </div>
 
@@ -507,10 +507,10 @@ export default function DashboardPage() {
                         <div>
                           <p className="text-xl font-bold text-slate-800">
                             {dashboardStats 
-                              ? `${(dashboardStats.weeklyStudyTime.reduce((a: number, b: number) => a + b, 0) / 60).toFixed(1)} Hrs` 
-                              : '4.5 Hrs'}
+                              ? `${(dashboardStats.weeklyStudyTime.reduce((a: number, b: number) => a + b, 0) / 60).toFixed(1)} ${t('dashboard.studyHrs')}` 
+                              : `4.5 ${t('dashboard.studyHrs')}`}
                           </p>
-                          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Weekly Study</p>
+                          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{t('dashboard.weeklyStudy')}</p>
                         </div>
                       </div>
                     </div>
@@ -518,7 +518,7 @@ export default function DashboardPage() {
                     {/* Lessons completed progress */}
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-bold text-slate-800">Completed Lessons</span>
+                        <span className="text-xs font-bold text-slate-800">{t('dashboard.completedLessons')}</span>
                         <span className="text-xs font-bold text-slate-500">
                           {dashboardStats ? `${dashboardStats.completedLessons} / ${dashboardStats.totalLessons}` : '24 / 40'}
                         </span>
@@ -535,8 +535,8 @@ export default function DashboardPage() {
                       </div>
                       <p className="text-[10px] text-slate-400 mt-2">
                         {dashboardStats 
-                          ? `${Math.round((dashboardStats.completedLessons / dashboardStats.totalLessons) * 100)}% of curriculum complete` 
-                          : '60% of curriculum complete'}
+                          ? `${Math.round((dashboardStats.completedLessons / dashboardStats.totalLessons) * 100)}% ${t('dashboard.curriculumComplete')}` 
+                          : `60% ${t('dashboard.curriculumComplete')}`}
                       </p>
                     </div>
                   </div>
@@ -550,7 +550,7 @@ export default function DashboardPage() {
                     
                     {/* 2. RECOMMENDED LESSONS */}
                     <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                      <h3 className="text-sm font-bold text-slate-800">Recommended Lessons</h3>
+                      <h3 className="text-sm font-bold text-slate-800">{t('dashboard.recommended')}</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-start justify-between group hover:border-blue-500 transition duration-200 cursor-pointer">
@@ -594,7 +594,7 @@ export default function DashboardPage() {
 
                     {/* 3. UPCOMING MOCK TESTS */}
                     <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                      <h3 className="text-sm font-bold text-slate-800">Upcoming Mock Tests</h3>
+                      <h3 className="text-sm font-bold text-slate-800">{t('dashboard.upcomingTests')}</h3>
                       <div className="space-y-3">
                         
                         <div className="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 transition">
@@ -634,8 +634,8 @@ export default function DashboardPage() {
                     {/* 4. VOCABULARY FLASHCARDS */}
                     <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
                       <div className="flex justify-between items-center">
-                        <h3 className="text-sm font-bold text-slate-800">Vocabulary Flashcards</h3>
-                        <span className="text-[10px] font-bold text-blue-600 hover:underline cursor-pointer">Review (15)</span>
+                        <h3 className="text-sm font-bold text-slate-800">{t('dashboard.flashcards')}</h3>
+                        <span className="text-[10px] font-bold text-blue-600 hover:underline cursor-pointer">{t('dashboard.reviewLink')} (15)</span>
                       </div>
                       <div className="space-y-2">
                         {dashboardStats?.flashcards && dashboardStats.flashcards.length > 0 ? (
@@ -684,10 +684,10 @@ export default function DashboardPage() {
 
                     {/* 5. PERFORMANCE ANALYTICS */}
                     <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                      <h3 className="text-sm font-bold text-slate-800">Performance Analytics</h3>
+                      <h3 className="text-sm font-bold text-slate-800">{t('dashboard.performanceAnalytics')}</h3>
                       
                       <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <span className="text-xs text-slate-500">Overall Accuracy</span>
+                        <span className="text-xs text-slate-500">{t('dashboard.accuracy')}</span>
                         <span className="text-sm font-bold text-blue-600">
                           {dashboardStats ? `${dashboardStats.analytics.accuracy}%` : '78%'}
                         </span>
@@ -695,7 +695,7 @@ export default function DashboardPage() {
 
                       <div className="space-y-3 pt-1">
                         <div>
-                          <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider">Strong Skills</p>
+                          <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider">{t('dashboard.strongSkills')}</p>
                           <ul className="text-xs text-slate-600 space-y-1 mt-1">
                             {(dashboardStats?.analytics?.strongSkills || [
                               'Part 5: Incomplete Sentences',
@@ -710,7 +710,7 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider">Weak Skills</p>
+                          <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider">{t('dashboard.weakSkills')}</p>
                           <ul className="text-xs text-slate-600 space-y-1 mt-1">
                             {(dashboardStats?.analytics?.weakSkills || [
                               'Part 7: Reading Comprehension',
@@ -743,19 +743,19 @@ export default function DashboardPage() {
                     <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
                       <h3 className="text-sm font-bold text-blue-600 flex items-center gap-2">
                         <FolderPlus className="w-4 h-4" />
-                        {role === 'student' ? 'Join Vocabulary Room' : 'Create Vocabulary Room'}
+                        {role === 'student' ? t('dashboard.roomsTab.joinTitle') : t('dashboard.roomsTab.createTitle')}
                       </h3>
                       <div className="space-y-3">
                         <input
                           type="text"
-                          placeholder="Room Name"
+                          placeholder={t('dashboard.roomsTab.roomName')}
                           value={roomName}
                           onChange={(e) => setRoomName(e.target.value)}
                           className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         />
                         <input
                           type="password"
-                          placeholder="Room Password"
+                          placeholder={t('dashboard.roomsTab.roomPassword')}
                           value={roomPassword}
                           onChange={(e) => setRoomPassword(e.target.value)}
                           className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
@@ -768,14 +768,14 @@ export default function DashboardPage() {
                               onChange={(e) => setShowScore(e.target.checked)}
                               className="mr-2 w-3.5 h-3.5 rounded text-blue-600 focus:ring-blue-500 bg-slate-100 border-slate-300"
                             />
-                            Display scores to students
+                            {t('dashboard.roomsTab.displayScore')}
                           </label>
                         )}
                         <button
                           onClick={role === 'student' ? joinRoom : createRoom}
                           className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition"
                         >
-                          {role === 'student' ? 'Join Room' : 'Create Room'}
+                          {role === 'student' ? t('dashboard.roomsTab.submitJoin') : t('dashboard.roomsTab.submitCreate')}
                         </button>
                       </div>
                     </div>
@@ -785,33 +785,33 @@ export default function DashboardPage() {
                       <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
                         <h3 className="text-sm font-bold text-green-600 flex items-center gap-2">
                           <BookOpen className="w-4 h-4" />
-                          Add Words to Room
+                          {t('dashboard.roomsTab.addWord')}
                         </h3>
                         <div className="space-y-2.5">
                           <input
                             type="text"
-                            placeholder="Word (English)"
+                            placeholder={t('dashboard.roomsTab.wordLabel')}
                             value={vocab.word}
                             onChange={(e) => setVocab({ ...vocab, word: e.target.value })}
                             className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                           <input
                             type="text"
-                            placeholder="Meaning (Vietnamese)"
+                            placeholder={t('dashboard.roomsTab.meaningLabel')}
                             value={vocab.meaning}
                             onChange={(e) => setVocab({ ...vocab, meaning: e.target.value })}
                             className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                           <input
                             type="text"
-                            placeholder="Example Sentence (Optional)"
+                            placeholder={t('dashboard.roomsTab.exampleLabel')}
                             value={vocab.example}
                             onChange={(e) => setVocab({ ...vocab, example: e.target.value })}
                             className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                           <input
                             type="text"
-                            placeholder="Target Room ID"
+                            placeholder={t('dashboard.roomsTab.targetRoom')}
                             value={vocab.roomId}
                             onChange={(e) => setVocab({ ...vocab, roomId: e.target.value })}
                             className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -820,14 +820,14 @@ export default function DashboardPage() {
                             onClick={addVocab}
                             className="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-xs transition"
                           >
-                            Add Word
+                            {t('dashboard.roomsTab.submitAddWord')}
                           </button>
                           
                           <div className="pt-2.5 border-t border-slate-100 space-y-2">
-                            <span className="text-[10px] text-slate-400 block">Or upload vocabulary Excel file (.xlsx)</span>
+                            <span className="text-[10px] text-slate-400 block">{t('dashboard.roomsTab.orUploadExcel')}</span>
                             <label className="flex items-center justify-center border border-dashed border-slate-300 hover:border-blue-500 rounded-lg p-2.5 cursor-pointer transition text-slate-500 hover:text-blue-600">
                               <UploadCloud className="w-4 h-4 mr-2" />
-                              <span className="text-[10px] font-semibold">Upload spreadsheet</span>
+                              <span className="text-[10px] font-semibold">{t('dashboard.roomsTab.uploadSpreadsheet')}</span>
                               <input
                                 type="file"
                                 accept=".xlsx,.xls"
@@ -846,12 +846,12 @@ export default function DashboardPage() {
                     <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
                       <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
                         <Users className="w-4 h-4" />
-                        Available Vocabulary Classrooms
+                        {t('dashboard.availableClassrooms')}
                       </h3>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {rooms.length === 0 ? (
-                          <div className="text-center py-10 text-slate-400 text-xs col-span-2">No classrooms found. Join or create a room above.</div>
+                          <div className="text-center py-10 text-slate-400 text-xs col-span-2">{t('dashboard.noClassroomsFound')}</div>
                         ) : (
                           rooms.map((room) => (
                             <div
@@ -879,13 +879,13 @@ export default function DashboardPage() {
                                   onClick={() => router.push(`/learn/${room.id}`)}
                                   className="flex-1 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-semibold rounded-lg transition"
                                 >
-                                  Learn Vocab
+                                  {t('navbar.learn')}
                                 </button>
                                 <button
                                   onClick={() => router.push(`/quiz/${room.id}`)}
                                   className="flex-1 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-[10px] font-semibold rounded-lg transition"
                                 >
-                                  Take Quiz
+                                  {t('navbar.quiz')}
                                 </button>
                               </div>
                             </div>
@@ -909,14 +909,14 @@ export default function DashboardPage() {
                     <div className="flex justify-between items-center">
                       <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
                         <Plus className="w-4 h-4" />
-                        Create Mock Practice Questions
+                        {t('dashboard.quizzesTab.createMockQuestions')}
                       </h3>
                       <select
                         value={selectedRoomId}
                         onChange={(e) => setSelectedRoomId(e.target.value)}
                         className="p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none"
                       >
-                        <option value="">Select target room</option>
+                        <option value="">{t('dashboard.quizzesTab.selectTargetRoom')}</option>
                         {rooms.map((r) => (
                           <option key={r.id} value={r.id}>
                             {r.name}
@@ -929,7 +929,7 @@ export default function DashboardPage() {
                       {quizQuestions.map((q, i) => (
                         <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 relative">
                           <input
-                            placeholder={`Question #${i + 1} Content`}
+                            placeholder={t('dashboard.quizzesTab.questionPlaceholder').replace('#{num}', String(i + 1))}
                             value={q.content}
                             onChange={(e) => updateQuestion(i, 'content', e.target.value)}
                             className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none"
@@ -938,7 +938,7 @@ export default function DashboardPage() {
                             {q.options.map((opt: string, j: number) => (
                               <input
                                 key={j}
-                                placeholder={`Option ${String.fromCharCode(65 + j)}`}
+                                placeholder={t('dashboard.quizzesTab.optionPlaceholder').replace('{char}', String.fromCharCode(65 + j))}
                                 value={opt}
                                 onChange={(e) => updateQuestion(i, 'options', e.target.value, j)}
                                 className="w-full p-2 bg-white border border-slate-100 rounded-lg text-xs text-slate-700"
@@ -946,7 +946,7 @@ export default function DashboardPage() {
                             ))}
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-xs text-slate-500 font-semibold">Correct Answer Option:</span>
+                            <span className="text-xs text-slate-500 font-semibold">{t('dashboard.quizzesTab.correctAnswerOption')}</span>
                             <select
                               value={q.correctAnswer}
                               onChange={(e) => updateQuestion(i, 'correctAnswer', e.target.value)}
@@ -963,7 +963,7 @@ export default function DashboardPage() {
                             onClick={() => removeQuestion(i)}
                             className="w-full py-1.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-[10px] font-bold transition border border-red-100"
                           >
-                            Remove this question
+                            {t('dashboard.quizzesTab.removeQuestion')}
                           </button>
                         </div>
                       ))}
@@ -974,13 +974,13 @@ export default function DashboardPage() {
                         onClick={addNewQuestion}
                         className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold"
                       >
-                        + Add Question Block
+                        {t('dashboard.quizzesTab.addQuestionBlock')}
                       </button>
                       <button
                         onClick={addQuizQuestions}
                         className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold"
                       >
-                        Save Questions to DB
+                        {t('dashboard.quizzesTab.saveQuestionsToDb')}
                       </button>
                     </div>
                   </div>
@@ -989,21 +989,21 @@ export default function DashboardPage() {
                   <div className="space-y-6">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h3 className="text-sm font-bold text-slate-800">Practice History & Quizzes</h3>
-                        <p className="text-xs text-slate-400 mt-1">Review your recent classroom scores and exercise logs.</p>
+                        <h3 className="text-sm font-bold text-slate-800">{t('dashboard.quizzesTab.historyTitle')}</h3>
+                        <p className="text-xs text-slate-400 mt-1">{t('dashboard.quizzesTab.historyDesc')}</p>
                       </div>
                       <button 
                         onClick={() => setActiveTab('rooms')} 
                         className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition"
                       >
-                        Join new session
+                        {t('dashboard.quizzesTab.joinSession')}
                       </button>
                     </div>
                     
                     <div className="p-10 text-center border-2 border-dashed border-slate-200 rounded-xl space-y-3">
                       <Brain className="w-10 h-10 text-slate-300 mx-auto" />
-                      <h4 className="text-sm font-bold text-slate-700">Quiz Practice Module is Ready</h4>
-                      <p className="text-xs text-slate-400 max-w-sm mx-auto">Please head to the "Vocabulary Rooms" tab, select an joined classroom, and click "Take Quiz" to begin testing your knowledge.</p>
+                      <h4 className="text-sm font-bold text-slate-700">{t('dashboard.quizzesTab.readyTitle')}</h4>
+                      <p className="text-xs text-slate-400 max-w-sm mx-auto">{t('dashboard.quizzesTab.readyDesc')}</p>
                     </div>
                   </div>
                 )}
@@ -1021,7 +1021,7 @@ export default function DashboardPage() {
                   {/* Detailed Study Hours Chart */}
                   <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
-                      <h3 className="text-sm font-bold text-slate-800 mb-4">Weekly Study Allocation</h3>
+                      <h3 className="text-sm font-bold text-slate-800 mb-4">{t('dashboard.statsTab.allocationTitle')}</h3>
                       <div className="h-56 relative">
                         <Bar data={studyTimeData} options={studyTimeOptions} />
                       </div>
@@ -1030,7 +1030,7 @@ export default function DashboardPage() {
 
                   {/* Detail word bank management (For Admin/Teacher) or Details stats (Students) */}
                   <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                    <h3 className="text-sm font-bold text-slate-800">Learning Insights</h3>
+                    <h3 className="text-sm font-bold text-slate-800">{t('dashboard.statsTab.insightsTitle')}</h3>
                     
                     {role === 'admin' ? (
                       <div className="space-y-4">
@@ -1042,7 +1042,7 @@ export default function DashboardPage() {
                           }}
                           className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none"
                         >
-                          <option value="">Select target room to inspect word database</option>
+                          <option value="">{t('dashboard.roomsTab.selectRoomToInspect')}</option>
                           {rooms.map((r) => (
                             <option key={r.id} value={r.id}>
                               {r.name}
@@ -1053,7 +1053,7 @@ export default function DashboardPage() {
                         {selectedRoomId && (
                           <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
                             {vocabList.length === 0 ? (
-                              <p className="text-center py-6 text-slate-400 text-xs">No vocabulary words found in this room.</p>
+                              <p className="text-center py-6 text-slate-400 text-xs">{t('dashboard.roomsTab.noWords')}</p>
                             ) : (
                               vocabList.map((v) => (
                                 <div
@@ -1083,22 +1083,22 @@ export default function DashboardPage() {
                         <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl space-y-2">
                           <p className="font-bold text-blue-800 flex items-center gap-1.5">
                             <Sparkles className="w-4 h-4 text-blue-600" />
-                            Next Achievement Goal
+                            {t('dashboard.statsTab.nextGoal')}
                           </p>
-                          <p className="text-[11px] text-slate-600">Complete 3 more vocabulary flashcard reviews this week to unlock the "Active Learner" badge!</p>
+                          <p className="text-[11px] text-slate-600">{t('dashboard.statsTab.activeLearnerDesc')}</p>
                         </div>
 
                         <div className="space-y-2">
                           <div className="flex justify-between items-center text-[11px]">
-                            <span className="font-semibold text-slate-500">Vocabulary memorized</span>
-                            <span className="font-bold text-slate-800">145 words</span>
+                            <span className="font-semibold text-slate-500">{t('dashboard.statsTab.memorized')}</span>
+                            <span className="font-bold text-slate-800">`145 ${t('dashboard.statsTab.wordsText')}`</span>
                           </div>
                           <div className="flex justify-between items-center text-[11px]">
-                            <span className="font-semibold text-slate-500">Total mock tests taken</span>
-                            <span className="font-bold text-slate-800">4 tests</span>
+                            <span className="font-semibold text-slate-500">{t('dashboard.statsTab.mockTestsTaken')}</span>
+                            <span className="font-bold text-slate-800">`4 ${t('dashboard.statsTab.testsText')}`</span>
                           </div>
                           <div className="flex justify-between items-center text-[11px]">
-                            <span className="font-semibold text-slate-500">Average test rating</span>
+                            <span className="font-semibold text-slate-500">{t('dashboard.statsTab.avgRating')}</span>
                             <span className="font-bold text-slate-800">680 / 990</span>
                           </div>
                         </div>
