@@ -54,7 +54,8 @@ export default function RegisterPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="text-center">
+        <div className="text-center flex flex-col items-center">
+          <img src="/logo.png" alt="Learn English Logo" className="w-16 h-16 rounded-2xl shadow-lg border border-slate-700/50 mb-4" />
           <h2 className="text-3xl font-extrabold text-white">{t('register.title')}</h2>
           <p className="text-sm text-slate-400 mt-2">{t('register.subtitle')}</p>
         </div>

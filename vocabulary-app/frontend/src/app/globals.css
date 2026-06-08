@@ -1,31 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
 @import "tailwindcss";
 
+/* ============================================================
+   GLOBAL BASE
+   ============================================================ */
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #0f172a; /* Slate 900 for modern premium dark theme */
-  color: #f8fafc; /* Slate 50 */
+  background-color: #090d16;
+  color: #f8fafc;
   margin: 0;
+  overflow-x: hidden;
 }
 
-/* Glassmorphism card styles */
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+  border: 2px solid #090d16;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+/* ============================================================
+   GLASS MORPHISM — used as a design system token
+   BaseCard uses equivalent Tailwind classes, but .card-glass
+   is kept for legacy page components not yet refactored.
+   ============================================================ */
 .card-glass {
-  background: rgba(30, 41, 59, 0.7);
+  background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1rem;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-glass:hover {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 12px 40px 0 rgba(59, 130, 246, 0.08), 0 0 0 1px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
 }
 
-.btn-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200;
-}
+/* ============================================================
+   DEPRECATED BUTTON CLASSES
+   ⚠️  Do NOT use in new code. Use <BaseButton variant="..."> instead.
+   Kept only for legacy page components pending refactor.
+   ============================================================ */
 
-.btn-secondary {
-  @apply bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-4 py-2 rounded-lg transition-colors duration-200 border border-slate-700;
-}
-
-/* TOEIC elements */
+/* ============================================================
+   TOEIC TEST ITEM COMPONENTS
+   ============================================================ */
 .testitem-wrapper {
   background: #1e293b;
   border: 1px solid #334155;
@@ -40,7 +75,7 @@ body {
 }
 .testitem-wrapper:hover {
   transform: translateY(-4px);
-  border-color: #f97316; /* secondary */
+  border-color: #f97316;
   box-shadow: 0 10px 20px -10px rgba(249, 115, 22, 0.3);
 }
 .testitem-title {
@@ -73,4 +108,51 @@ body {
 .testitem-start-test .btn:hover {
   background: #f97316;
   color: white;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes shimmer-gradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-text-glow {
+  background-size: 200% auto;
+  animation: shimmer-gradient 5s ease infinite;
+}
+
+@keyframes float-blob {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50%       { transform: translateY(-20px) scale(1.05); }
+}
+.animate-float-blob {
+  animation: float-blob 8s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+/* ============================================================
+   GRADIENT BACKGROUNDS
+   ============================================================ */
+.bg-gradient-radial {
+  background: radial-gradient(ellipse at center, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+/* ============================================================
+   FOCUS VISIBLE — Accessibility
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
