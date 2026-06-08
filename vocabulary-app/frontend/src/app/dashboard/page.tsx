@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import * as XLSX from 'xlsx';
 import { apiClient } from '../../lib/api-client';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useLanguageStore } from '../../store/useLanguageStore';
 import {
   BookOpen,
   FolderPlus,
@@ -24,7 +25,8 @@ import {
   Sparkles,
   Trophy,
   ChevronRight,
-  AlertCircle
+  AlertCircle,
+  Settings
 } from 'lucide-react';
 import { Line, Bar } from 'react-chartjs-2';
 import {
@@ -52,7 +54,8 @@ ChartJS.register(
 
 export default function DashboardPage() {
   const { token, role } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'overview' | 'rooms' | 'quizzes' | 'stats'>('overview');
+  const { t, language, setLanguage } = useLanguageStore();
+  const [activeTab, setActiveTab] = useState<'overview' | 'rooms' | 'quizzes' | 'stats' | 'settings'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
   const [dashboardStats, setDashboardStats] = useState<any>(null);
   const [loadingStats, setLoadingStats] = useState(true);
@@ -359,7 +362,7 @@ export default function DashboardPage() {
               <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
                 T
               </div>
-              <span className="font-bold text-lg text-slate-800 tracking-tight">TOEIC Master</span>
+              <span className="font-bold text-lg text-slate-800 tracking-tight">{t('dashboard.title')}</span>
             </div>
 
             <nav className="space-y-1">
@@ -372,7 +375,7 @@ export default function DashboardPage() {
                 }`}
               >
                 <BarChart2 className="w-4 h-4" />
-                <span>Overview</span>
+                <span>{t('dashboard.overview')}</span>
               </button>
 
               <button
@@ -384,7 +387,7 @@ export default function DashboardPage() {
                 }`}
               >
                 <Users className="w-4 h-4" />
-                <span>Vocabulary Rooms</span>
+                <span>{t('dashboard.rooms')}</span>
               </button>
 
               <button
@@ -396,7 +399,7 @@ export default function DashboardPage() {
                 }`}
               >
                 <Brain className="w-4 h-4" />
-                <span>Practice & Quizzes</span>
+                <span>{t('dashboard.quizzes')}</span>
               </button>
 
               <button
@@ -408,7 +411,19 @@ export default function DashboardPage() {
                 }`}
               >
                 <Trophy className="w-4 h-4" />
-                <span>Performance & Stats</span>
+                <span>{t('dashboard.performance')}</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('settings')}
+                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
+                  activeTab === 'settings'
+                    ? 'bg-blue-50 text-blue-600'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`}
+              >
+                <Settings className="w-4 h-4" />
+                <span>{t('navbar.settings')}</span>
               </button>
             </nav>
           </div>
@@ -442,11 +457,11 @@ export default function DashboardPage() {
               />
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-xs font-semibold text-slate-600">Need help?</span>
+              <span className="text-xs font-semibold text-slate-600">{t('dashboard.needHelp')}</span>
               <span className="text-xs text-slate-300">|</span>
               <div className="flex items-center space-x-2 text-xs font-bold text-slate-800">
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>Level: Intermediate</span>
+                <span>{t('dashboard.level')}</span>
               </div>
             </div>
           </header>
@@ -1093,6 +1108,49 @@ export default function DashboardPage() {
 
                 </div>
 
+              </div>
+            )}
+
+            {/* TAB: SETTINGS */}
+            {activeTab === 'settings' && (
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6 max-w-lg">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <Settings className="w-4 h-4 text-slate-600" />
+                    {t('settings.title')}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">{t('settings.titleDesc')}</p>
+                </div>
+                <div className="space-y-4 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-700">{t('settings.language')}</h4>
+                      <p className="text-[10px] text-slate-400 mt-0.5">{t('settings.languageDesc')}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setLanguage('vi')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${
+                          language === 'vi'
+                            ? 'bg-blue-600 border-blue-600 text-white'
+                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {t('settings.vietnamese')}
+                      </button>
+                      <button
+                        onClick={() => setLanguage('en')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${
+                          language === 'en'
+                            ? 'bg-blue-600 border-blue-600 text-white'
+                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {t('settings.english')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
